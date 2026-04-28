@@ -13,6 +13,14 @@ import java.util.List;
 import java.util.Locale;
 
 public class SummaryActivity extends AppCompatActivity {
+
+    private TextView tvFoodTotal;
+    private TextView tvTransportTotal;
+    private TextView tvShoppingTotal;
+    private TextView tvBillsTotal;
+    private TextView tvOtherTotal;
+    private TextView tvGrandTotal;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +35,13 @@ public class SummaryActivity extends AppCompatActivity {
         Button btnBackHome = findViewById(R.id.btnBackHome);
         btnBackHome.setOnClickListener(v -> finish());
 
+        tvFoodTotal = findViewById(R.id.tvFoodTotal);
+        tvTransportTotal = findViewById(R.id.tvTransportTotal);
+        tvShoppingTotal = findViewById(R.id.tvShoppingTotal);
+        tvBillsTotal = findViewById(R.id.tvBillsTotal);
+        tvOtherTotal = findViewById(R.id.tvOtherTotal);
+        tvGrandTotal = findViewById(R.id.tvGrandTotal);
+
         ExpenseDatabase database = ExpenseDatabase.getDatabase(this);
         List<ExpenseEntity> expenses = database.expenseDao().getAllExpenses();
 
@@ -35,7 +50,7 @@ public class SummaryActivity extends AppCompatActivity {
         for (ExpenseEntity expense : expenses) {
             double amount;
             try {
-                amount = Double.parseDouble(expense.getAmount());
+                amount = Double.parseDouble(expense.getAmount().replace("$", "").trim());
             } catch (NumberFormatException e) {
                 continue;
             }
@@ -59,10 +74,13 @@ public class SummaryActivity extends AppCompatActivity {
             }
         }
 
-        ((TextView) findViewById(R.id.tvFoodTotal)).setText(String.format(Locale.US, "$%.2f", food));
-        ((TextView) findViewById(R.id.tvTransportTotal)).setText(String.format(Locale.US, "$%.2f", transport));
-        ((TextView) findViewById(R.id.tvShoppingTotal)).setText(String.format(Locale.US, "$%.2f", shopping));
-        ((TextView) findViewById(R.id.tvBillsTotal)).setText(String.format(Locale.US, "$%.2f", bills));
-        ((TextView) findViewById(R.id.tvOtherTotal)).setText(String.format(Locale.US, "$%.2f", other));
+        double grandTotal = food + transport + shopping + bills + other;
+
+        tvFoodTotal.setText(String.format(Locale.US, "$%.2f", food));
+        tvTransportTotal.setText(String.format(Locale.US, "$%.2f", transport));
+        tvShoppingTotal.setText(String.format(Locale.US, "$%.2f", shopping));
+        tvBillsTotal.setText(String.format(Locale.US, "$%.2f", bills));
+        tvOtherTotal.setText(String.format(Locale.US, "$%.2f", other));
+        tvGrandTotal.setText(String.format(Locale.US, "$%.2f", grandTotal));
     }
 }

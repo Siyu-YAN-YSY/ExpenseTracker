@@ -25,7 +25,6 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<ExpenseEntity> expenseList;
     private ArrayList<ExpenseEntity> filteredList;
     private ExpenseAdapterRoom expenseAdapter;
     private TextView tvTotalAmount;
@@ -36,9 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private final ActivityResultLauncher<Intent> addExpenseLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK) {
-                    loadExpensesFromDatabase();
-                    applyFilter(spinnerCategory.getSelectedItem().toString());
-                    updateTotalExpense();
+                    loadExpensesFromDatabase(spinnerCategory.getSelectedItem().toString());
                 }
             });
 
@@ -69,16 +66,13 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerViewExpenses = findViewById(R.id.recyclerViewExpenses);
 
-        expenseList = new ArrayList<>();
         filteredList = new ArrayList<>();
 
         expenseAdapter = new ExpenseAdapterRoom(
                 filteredList,
                 expense -> {
                     database.expenseDao().deleteExpense(expense);
-                    loadExpensesFromDatabase();
-                    applyFilter(spinnerCategory.getSelectedItem().toString());
-                    updateTotalExpense();
+                    loadExpensesFromDatabase(spinnerCategory.getSelectedItem().toString());
                 },
                 expense -> {
                     Intent intent = new Intent(MainActivity.this, AddExpenseActivity.class);
@@ -98,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedCategory = parent.getItemAtPosition(position).toString();
-                applyFilter(selectedCategory);
+                loadExpensesFromDatabase(selectedCategory);
             }
 
             @Override
@@ -117,43 +111,31 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        loadExpensesFromDatabase();
-        applyFilter("All");
-        updateTotalExpense();
+        loadExpensesFromDatabase("All");
     }
 
-    private void loadExpensesFromDatabase() {
-        List<ExpenseEntity> allExpenses = database.expenseDao().getAllExpenses();
-        expenseList.clear();
-        expenseList.addAll(allExpenses);
-    }
+    private void loadExpensesFromDatabase(String category) {
+        List<ExpenseEntity> expenses = database.expenseDao().getExpensesByCategory(category);
 
-    private void applyFilter(String category) {
         filteredList.clear();
-
-        if (category.equals("All")) {
-            filteredList.addAll(expenseList);
-        } else {
-            for (ExpenseEntity expense : expenseList) {
-                if (expense.getCategory().equals(category)) {
-                    filteredList.add(expense);
-                }
-            }
-        }
+        filteredList.addAll(expenses);
 
         expenseAdapter.notifyDataSetChanged();
         updateEmptyState();
+        updateTotalExpense();
     }
 
     private void updateTotalExpense() {
         double total = 0.0;
-        for (ExpenseEntity expense : expenseList) {
+
+        for (ExpenseEntity expense : filteredList) {
             try {
                 total += Double.parseDouble(expense.getAmount());
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
         }
+
         tvTotalAmount.setText(String.format(Locale.US, "$%.2f", total));
     }
 

@@ -22,4 +22,10 @@ public interface ExpenseDao {
 
     @Query("SELECT * FROM expenses")
     List<ExpenseEntity> getAllExpenses();
+
+    @Query("SELECT * FROM expenses WHERE id = :id LIMIT 1")
+    ExpenseEntity getExpenseById (int id);
+
+    @Query("SELECT * FROM expenses WHERE (:category = 'All' OR category = :category)")
+    List<ExpenseEntity> getExpensesByCategory(String category);
 }
