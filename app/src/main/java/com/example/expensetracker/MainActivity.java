@@ -1,7 +1,12 @@
 package com.example.expensetracker;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,6 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -49,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         database = ExpenseDatabase.getDatabase(this);
 
@@ -145,5 +154,41 @@ public class MainActivity extends AppCompatActivity {
         } else {
             tvEmptyState.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.info) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Information")
+                    .setMessage("Expense Tracker helps you track, filter, edit, and summarize your expenses.")
+                    .setPositiveButton("OK", null)
+                    .show();
+            return true;
+        }
+
+        if (id == R.id.uninstall) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Uninstall App")
+                    .setMessage("Do you want to open the uninstall screen?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                        intent.setData(Uri.parse("package:" + getPackageName()));
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
