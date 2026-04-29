@@ -114,27 +114,36 @@ public class AddExpenseActivity extends AppCompatActivity {
         String note = etNote.getText() != null ? etNote.getText().toString().trim() : "";
         String category = spinnerAddCategory.getSelectedItem().toString();
 
+
+        // Tied error msg to the fields instead of a Toast
+        TextInputLayout tilAmount = findViewById(R.id.tilAmount);
         if (amountText.isEmpty()) {
-            Toast.makeText(this, "Amount is required", Toast.LENGTH_SHORT).show();
+            tilAmount.setError("Amount is required");
             return;
+        } else {
+            tilAmount.setError(null);
+        }
+
+        if (!amountText.matches("^\\d+(\\.\\d{1,2})?$")) {
+            tilAmount.setError("Invalid input (e.g., 10.99)");
+            return;
+        } else {
+            tilAmount.setError(null);
         }
 
         double amountValue;
         try {
             amountValue = Double.parseDouble(amountText);
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Enter a valid amount", Toast.LENGTH_SHORT).show();
+            tilAmount.setError("Enter a valid amount");
             return;
         }
 
-        if (amountValue <= 0) {
-            Toast.makeText(this, "Amount must be greater than 0", Toast.LENGTH_SHORT).show();
+        if (amountValue >= 100000) {
+            tilAmount.setError("Amount is too large");
             return;
-        }
-
-        if (date.isEmpty()) {
-            Toast.makeText(this, "Date is required", Toast.LENGTH_SHORT).show();
-            return;
+        } else {
+            tilAmount.setError(null);
         }
 
         String finalAmount = String.format(Locale.US, "%.2f", amountValue);
