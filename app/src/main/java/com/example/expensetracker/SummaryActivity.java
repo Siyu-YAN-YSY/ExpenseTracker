@@ -15,6 +15,8 @@ import java.util.Locale;
 public class SummaryActivity extends AppCompatActivity {
 
     private TextView tvFoodTotal;
+
+    private TextView tvEntertainmentTotal;
     private TextView tvTransportTotal;
     private TextView tvShoppingTotal;
     private TextView tvBillsTotal;
@@ -36,6 +38,7 @@ public class SummaryActivity extends AppCompatActivity {
         btnBackHome.setOnClickListener(v -> finish());
 
         tvFoodTotal = findViewById(R.id.tvFoodTotal);
+        tvEntertainmentTotal = findViewById(R.id.tvEntertainmentTotal);
         tvTransportTotal = findViewById(R.id.tvTransportTotal);
         tvShoppingTotal = findViewById(R.id.tvShoppingTotal);
         tvBillsTotal = findViewById(R.id.tvBillsTotal);
@@ -45,7 +48,7 @@ public class SummaryActivity extends AppCompatActivity {
         ExpenseDatabase database = ExpenseDatabase.getDatabase(this);
         List<ExpenseEntity> expenses = database.expenseDao().getAllExpenses();
 
-        double food = 0, transport = 0, shopping = 0, bills = 0, other = 0;
+        double food = 0, entertainment = 0, transport = 0, shopping = 0, bills = 0, other = 0;
 
         for (ExpenseEntity expense : expenses) {
             double amount;
@@ -58,6 +61,9 @@ public class SummaryActivity extends AppCompatActivity {
             switch (expense.getCategory()) {
                 case "Food":
                     food += amount;
+                    break;
+                case "Entertainment":
+                    entertainment += amount;
                     break;
                 case "Transport":
                     transport += amount;
@@ -77,6 +83,7 @@ public class SummaryActivity extends AppCompatActivity {
         double grandTotal = food + transport + shopping + bills + other;
 
         tvFoodTotal.setText(String.format(Locale.US, "$%.2f", food));
+        tvEntertainmentTotal.setText(String.format(Locale.US, "$%.2f", entertainment));
         tvTransportTotal.setText(String.format(Locale.US, "$%.2f", transport));
         tvShoppingTotal.setText(String.format(Locale.US, "$%.2f", shopping));
         tvBillsTotal.setText(String.format(Locale.US, "$%.2f", bills));

@@ -58,4 +58,15 @@ public class ExpenseEntity {
     public void setNote(String note) {
         this.note = note;
     }
+
+
+    // Responsible for converting stored amount string into numeric value
+    // And also handling invalid format safely by return 0
+    public double getAmountValue() {
+        try {
+            return Double.parseDouble(amount.replace("$", "").trim());
+        } catch (Exception e) {
+            return 0;
+        }
+    }
 }

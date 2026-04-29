@@ -70,6 +70,8 @@ public class ExpenseAdapterRoom extends RecyclerView.Adapter<ExpenseAdapterRoom.
         switch (category) {
             case "Food":
                 return Color.parseColor("#4CAF50");
+            case "Entertainment":
+                return Color.parseColor(("#FF0000"));
             case "Transport":
                 return Color.parseColor("#2196F3");
             case "Shopping":
