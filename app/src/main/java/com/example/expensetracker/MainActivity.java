@@ -204,6 +204,9 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btnSummary).setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SummaryActivity.class);
+            intent.putExtra("selected_month", spinnerMonth.getSelectedItem() != null
+                    ? spinnerMonth.getSelectedItem().toString()
+                    : "All");
             startActivity(intent);
         });
 

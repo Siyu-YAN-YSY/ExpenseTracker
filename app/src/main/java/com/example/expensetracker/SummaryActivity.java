@@ -44,7 +44,26 @@ public class SummaryActivity extends AppCompatActivity {
         tvGrandTotal = findViewById(R.id.tvGrandTotal);
 
         ExpenseDatabase database = ExpenseDatabase.getDatabase(this);
-        List<ExpenseEntity> expenses = database.expenseDao().getAllExpenses();
+
+        String selectedMonth = getIntent().getStringExtra("selected_month");
+        if (selectedMonth == null) {
+            selectedMonth = "All";
+        }
+
+        List<ExpenseEntity> expenses;
+
+        if (selectedMonth.equals("All")) {
+            expenses = database.expenseDao().getAllExpenses();
+        } else {
+            String[] parts = selectedMonth.split("/");
+            if (parts.length >= 2) {
+                String month = parts[0];
+                String year = parts[1];
+                expenses = database.expenseDao().getExpensesByMonth(month, year);
+            } else {
+                expenses = database.expenseDao().getAllExpenses();
+            }
+        }
 
         double food = 0, entertainment = 0, transport = 0, shopping = 0, bills = 0, other = 0;
 
