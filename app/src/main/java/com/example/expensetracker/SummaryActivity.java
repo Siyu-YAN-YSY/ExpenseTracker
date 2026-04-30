@@ -46,34 +46,44 @@ public class SummaryActivity extends AppCompatActivity {
         ExpenseDatabase database = ExpenseDatabase.getDatabase(this);
 
         String selectedMonth = getIntent().getStringExtra("selected_month");
-        if (selectedMonth == null) {
-            selectedMonth = "All";
-        }
+        String selectedCategory = getIntent().getStringExtra("selected_category");
+
+        if (selectedMonth == null) selectedMonth = "All";
+
+        if (selectedCategory == null) selectedCategory = "All";
 
         List<ExpenseEntity> expenses;
 
         if (selectedMonth.equals("All")) {
-            expenses = database.expenseDao().getAllExpenses();
+            if (selectedCategory.equals("All")) {
+                expenses = database.expenseDao().getAllExpenses();
+            } else {
+                expenses = database.expenseDao().getExpensesByCategory(selectedCategory);
+            }
         } else {
             String[] parts = selectedMonth.split("/");
             if (parts.length >= 2) {
                 String month = parts[0];
                 String year = parts[1];
-                expenses = database.expenseDao().getExpensesByMonth(month, year);
+
+                if (selectedCategory.equals("All")) {
+                    expenses = database.expenseDao().getExpensesByMonth(month, year);
+                } else {
+                    expenses = database.expenseDao().getExpensesByCategoryAndMonth(selectedCategory, month, year);
+                }
             } else {
-                expenses = database.expenseDao().getAllExpenses();
+                if (selectedCategory.equals("All")) {
+                    expenses = database.expenseDao().getAllExpenses();
+                } else {
+                    expenses = database.expenseDao().getExpensesByCategory(selectedCategory);
+                }
             }
         }
 
         double food = 0, entertainment = 0, transport = 0, shopping = 0, bills = 0, other = 0;
 
         for (ExpenseEntity expense : expenses) {
-            double amount;
-            try {
-                amount = Double.parseDouble(expense.getAmount().replace("$", "").trim());
-            } catch (NumberFormatException e) {
-                continue;
-            }
+            double amount = expense.getAmountValue();
 
             switch (expense.getCategory()) {
                 case "Food":

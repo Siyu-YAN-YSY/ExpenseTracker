@@ -207,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("selected_month", spinnerMonth.getSelectedItem() != null
                     ? spinnerMonth.getSelectedItem().toString()
                     : "All");
+            intent.putExtra("selected_category", getSelectedCategory());
             startActivity(intent);
         });
 
@@ -442,6 +443,8 @@ public class MainActivity extends AppCompatActivity {
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleRadius(50f);
         pieChart.setTransparentCircleRadius(50f);
+        pieChart.setBackgroundColor(Color.TRANSPARENT);
+        pieChart.setHoleColor(Color.TRANSPARENT);
         pieChart.setCenterText("Expenses");
         pieChart.setCenterTextSize(14f);
         pieChart.getDescription().setEnabled(false);
