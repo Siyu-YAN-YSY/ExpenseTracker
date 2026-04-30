@@ -28,4 +28,13 @@ public interface ExpenseDao {
 
     @Query("SELECT * FROM expenses WHERE (:category = 'All' OR category = :category)")
     List<ExpenseEntity> getExpensesByCategory(String category);
+
+    @Query("SELECT DISTINCT substr(date, 1, 2) || '/' || substr(date, 7, 4) FROM expenses ORDER BY substr(date, 7, 4) DESC, substr(date, 1, 2) DESC")
+    List<String> getAvailableMonths();
+
+    @Query("SELECT * FROM expenses WHERE substr(date, 1, 2) = :month AND substr(date, 7, 4) = :year")
+    List<ExpenseEntity> getExpensesByMonth(String month, String year);
+
+    @Query("SELECT * FROM expenses WHERE category = :category AND substr(date, 1, 2) = :month AND substr(date, 7, 4) = :year")
+    List<ExpenseEntity> getExpensesByCategoryAndMonth(String category, String month, String year);
 }

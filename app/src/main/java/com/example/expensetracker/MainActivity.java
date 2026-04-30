@@ -2,14 +2,19 @@ package com.example.expensetracker;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.InputType;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -40,7 +45,10 @@ public class MainActivity extends AppCompatActivity {
 
     private ExpenseAdapterRoom expenseAdapter;
     private TextView tvTotalAmount;
+    private TextView tvBudget;
+    private TextView tvRemaining;
     private TextView tvEmptyState;
+    private Spinner spinnerMonth;
     private Spinner spinnerCategory;
     private PieChart pieChart;
     private ExpenseDatabase database;
@@ -48,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private final ActivityResultLauncher<Intent> addExpenseLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK) {
+                    setupMonthSpinner();
                     loadExpensesFromDatabase(getSelectedCategory());
                 }
             });
@@ -65,10 +74,12 @@ public class MainActivity extends AppCompatActivity {
         database = ExpenseDatabase.getDatabase(this);
 
         setupSpinner();
+        setupMonthSpinner();
         setupRecyclerView();
         setupListeners();
 
         loadExpensesFromDatabase("All");
+        updateBudgetUI();
     }
 
     // Responsible for adjusting layout padding to avoid overlap with system UI
@@ -91,7 +102,10 @@ public class MainActivity extends AppCompatActivity {
     // Responsible for finding and assigning all UI components from XML layout
     private void initializeViews() {
         tvTotalAmount = findViewById(R.id.tvTotalAmount);
+        tvBudget = findViewById(R.id.tvBudget);
+        tvRemaining = findViewById(R.id.tvRemaining);
         tvEmptyState = findViewById(R.id.tvEmptyState);
+        spinnerMonth = findViewById(R.id.spinnerMonth);
         spinnerCategory = findViewById(R.id.spinnerCategory);
         pieChart = findViewById(R.id.pieChart);
     }
@@ -120,6 +134,44 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void setupMonthSpinner() {
+        String currentSelection = spinnerMonth.getSelectedItem() != null
+                ? spinnerMonth.getSelectedItem().toString()
+                : "All";
+
+        List<String> months = new ArrayList<>();
+        months.add("All");
+
+        List<String> dbMonths = database.expenseDao().getAvailableMonths();
+        if (dbMonths != null) {
+            months.addAll(dbMonths);
+        }
+
+        ArrayAdapter<String> adapterMonth = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                months
+        );
+        adapterMonth.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerMonth.setAdapter(adapterMonth);
+
+        int index = months.indexOf(currentSelection);
+        if (index >= 0) {
+            spinnerMonth.setSelection(index);
+        }
+
+        spinnerMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                loadExpensesFromDatabase(getSelectedCategory());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
 
     // Responsible for initialize RecyclerView for displaying expense list
     // Also handles delete and edit actions for each item
@@ -153,6 +205,10 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, SummaryActivity.class);
             startActivity(intent);
         });
+
+        findViewById(R.id.btnSetBudget).setOnClickListener(v -> {
+            showBudgetDialogue();
+        });
     }
 
 
@@ -178,7 +234,25 @@ public class MainActivity extends AppCompatActivity {
     // Responsible for loading expenses from room database on selected category
     // Also for updating list, total amount, and pie chart
     private void loadExpensesFromDatabase(String category) {
-        List<ExpenseEntity> expenses = database.expenseDao().getExpensesByCategory(category);
+        String selectedMonth = spinnerMonth.getSelectedItem() != null
+                ? spinnerMonth.getSelectedItem().toString()
+                : "All";
+
+        List<ExpenseEntity> expenses;
+
+        if (selectedMonth.equals("All")) {
+            expenses = database.expenseDao().getExpensesByCategory(category);
+        } else {
+            String[] components = selectedMonth.split("/");
+            String month = components[0];
+            String year = components[1];
+
+            if (category.equals("All")) {
+                expenses = database.expenseDao().getExpensesByMonth(month, year);
+            } else {
+                expenses = database.expenseDao().getExpensesByCategoryAndMonth(category, month, year);
+            }
+        }
 
         filteredList.clear();
         filteredList.addAll(expenses);
@@ -186,6 +260,7 @@ public class MainActivity extends AppCompatActivity {
         expenseAdapter.notifyDataSetChanged();
         updateEmptyState();
         updateTotalExpense();
+        updateBudgetUI();
         updatePieChart();
     }
 
@@ -197,6 +272,80 @@ public class MainActivity extends AppCompatActivity {
         tvTotalAmount.setText(String.format(Locale.US, "$%.2f", total));
     }
 
+    private void saveBudget(float value) {
+        getSharedPreferences("budget", MODE_PRIVATE)
+                .edit()
+                .putFloat("budget", value)
+                .apply();
+    }
+
+    private float getBudget() {
+        return getSharedPreferences("budget", MODE_PRIVATE)
+                .getFloat("budget", 0f);
+    }
+
+    private void showBudgetDialogue() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        TextView title = new TextView(this);
+        title.setText("Set Monthly Budget");
+        title.setTextSize(18f);
+        title.setPadding(0, 30, 0, 10);
+        title.setGravity(Gravity.CENTER);
+        title.setTypeface(null, Typeface.BOLD);
+
+        builder.setCustomTitle(title);
+
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.setPadding(60, 20, 60, 10);
+        layout.setGravity(Gravity.CENTER);
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        input.setHint("Enter Amount");
+        input.setGravity(Gravity.CENTER);
+        input.setTextSize(16f);
+
+        layout.addView(input);
+        builder.setView(layout);
+
+        builder.setPositiveButton("Save", (dialogue, which) -> {
+            String value = input.getText().toString();
+
+            if (!value.isEmpty()) {
+                float budget = Float.parseFloat(value);
+                saveBudget(budget);
+                updateBudgetUI();
+            }
+        });
+        builder.setNegativeButton("Cancel", null).show();
+    }
+
+    private void updateBudgetUI() {
+        String selectedMonth = spinnerMonth.getSelectedItem() != null
+                ? spinnerMonth.getSelectedItem().toString()
+                : "All";
+
+        if (selectedMonth.equals("All")) {
+            tvBudget.setText("Budget: -");
+            tvRemaining.setText("Remaining: -");
+            return;
+        }
+
+        float budget = getBudget();
+        double totalExpense = ExpenseCalculator.getTotal(filteredList);
+        double remaining = budget - totalExpense;
+
+        tvBudget.setText(String.format(Locale.US, "Budget: $%.2f", budget));
+        tvRemaining.setText(String.format(Locale.US, "Remaining: $%.2f", remaining));
+
+        if (remaining < 0) {
+            tvRemaining.setTextColor(android.graphics.Color.RED);
+        } else {
+            tvRemaining.setTextColor(android.graphics.Color.parseColor("#2E7D32"));
+        }
+    }
 
     // Responsible for showing "No expense yet" message when list is empty
     // And hiding it when data exists
