@@ -13,9 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class SummaryActivity extends AppCompatActivity {
-
     private TextView tvFoodTotal;
-
     private TextView tvEntertainmentTotal;
     private TextView tvTransportTotal;
     private TextView tvShoppingTotal;
