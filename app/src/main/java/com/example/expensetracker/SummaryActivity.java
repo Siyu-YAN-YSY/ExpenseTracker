@@ -80,7 +80,7 @@ public class SummaryActivity extends AppCompatActivity {
             }
         }
 
-        double grandTotal = food + transport + shopping + bills + other;
+        double grandTotal = food + entertainment + transport + shopping + bills + other;
 
         tvFoodTotal.setText(String.format(Locale.US, "$%.2f", food));
         tvEntertainmentTotal.setText(String.format(Locale.US, "$%.2f", entertainment));

@@ -2,6 +2,7 @@ package com.example.expensetracker;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -323,19 +324,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateBudgetUI() {
+        float budget = getBudget();
+        double totalExpense = ExpenseCalculator.getTotal(filteredList);
+        double remaining;
+
         String selectedMonth = spinnerMonth.getSelectedItem() != null
                 ? spinnerMonth.getSelectedItem().toString()
                 : "All";
 
-        if (selectedMonth.equals("All")) {
-            tvBudget.setText("Budget: -");
-            tvRemaining.setText("Remaining: -");
+        if (budget == 0f) {
+            tvBudget.setText("Budget: Not Set");
+            tvRemaining.setText("Set a budget to track spending");
+            tvRemaining.setTextColor(Color.GRAY);
             return;
+        } else {
+            tvBudget.setText(String.format(Locale.US, "Budget: $%.2f", budget));
+            if (selectedMonth.equals("All")) {
+                tvRemaining.setText("Select a month to view remaining");
+                tvRemaining.setTextColor(Color.GRAY);
+                return;
+            } else {
+                remaining = budget - totalExpense;
+            }
         }
-
-        float budget = getBudget();
-        double totalExpense = ExpenseCalculator.getTotal(filteredList);
-        double remaining = budget - totalExpense;
 
         tvBudget.setText(String.format(Locale.US, "Budget: $%.2f", budget));
         tvRemaining.setText(String.format(Locale.US, "Remaining: $%.2f", remaining));
