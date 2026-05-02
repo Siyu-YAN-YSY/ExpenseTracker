@@ -1,5 +1,6 @@
 package com.example.expensetracker;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -12,11 +13,19 @@ public class ExpenseEntity {
     private String date;
     private String note;
 
+    @ColumnInfo(name = "is_recurring", defaultValue = "0")
+    private boolean recurring;
+
+    @ColumnInfo(name = "recurring_interval", defaultValue = "'None'")
+    private String recurringInterval;
+
     public ExpenseEntity(String amount, String category, String date, String note) {
         this.amount = amount;
         this.category = category;
         this.date = date;
         this.note = note;
+        this.recurring = false;
+        this.recurringInterval = "None";
     }
 
     public int getId() {
@@ -59,9 +68,27 @@ public class ExpenseEntity {
         this.note = note;
     }
 
+    public boolean isRecurring() {
+        return recurring;
+    }
 
-    // Responsible for converting stored amount string into numeric value
-    // And also handling invalid format safely by return 0
+    public void setRecurring(boolean recurring) {
+        this.recurring = recurring;
+    }
+
+    public String getRecurringInterval() {
+        return recurringInterval == null ? "None" : recurringInterval;
+    }
+
+    public void setRecurringInterval(String recurringInterval) {
+        if (recurringInterval == null || recurringInterval.trim().isEmpty()) {
+            this.recurringInterval = "None";
+        } else {
+            this.recurringInterval = recurringInterval;
+        }
+    }
+
+    // Converts stored amount string into numeric value and handles invalid formats safely.
     public double getAmountValue() {
         try {
             return Double.parseDouble(amount.replace("$", "").trim());

@@ -15,9 +15,9 @@ import java.util.ArrayList;
 
 public class ExpenseAdapterRoom extends RecyclerView.Adapter<ExpenseAdapterRoom.ExpenseViewHolder> {
 
-    private ArrayList<ExpenseEntity> expenseList;
-    private OnDeleteClickListener deleteClickListener;
-    private OnEditClickListener editClickListener;
+    private final ArrayList<ExpenseEntity> expenseList;
+    private final OnDeleteClickListener deleteClickListener;
+    private final OnEditClickListener editClickListener;
 
     public interface OnDeleteClickListener {
         void onDeleteClick(ExpenseEntity expense);
@@ -57,6 +57,13 @@ public class ExpenseAdapterRoom extends RecyclerView.Adapter<ExpenseAdapterRoom.
         holder.tvCategoryBadge.setText(expense.getCategory());
         holder.tvCategoryBadge.setBackgroundColor(getCategoryColor(expense.getCategory()));
 
+        if (expense.isRecurring()) {
+            holder.tvRecurringBadge.setVisibility(View.VISIBLE);
+            holder.tvRecurringBadge.setText("Repeats " + expense.getRecurringInterval());
+        } else {
+            holder.tvRecurringBadge.setVisibility(View.GONE);
+        }
+
         holder.btnDelete.setOnClickListener(v -> deleteClickListener.onDeleteClick(expense));
         holder.btnEdit.setOnClickListener(v -> editClickListener.onEditClick(expense));
     }
@@ -71,7 +78,7 @@ public class ExpenseAdapterRoom extends RecyclerView.Adapter<ExpenseAdapterRoom.
             case "Food":
                 return Color.parseColor("#4CAF50");
             case "Entertainment":
-                return Color.parseColor(("#FF0000"));
+                return Color.parseColor("#F44336");
             case "Transport":
                 return Color.parseColor("#2196F3");
             case "Shopping":
@@ -84,7 +91,7 @@ public class ExpenseAdapterRoom extends RecyclerView.Adapter<ExpenseAdapterRoom.
     }
 
     public static class ExpenseViewHolder extends RecyclerView.ViewHolder {
-        TextView tvItemAmount, tvItemCategoryDate, tvItemNote, tvCategoryBadge;
+        TextView tvItemAmount, tvItemCategoryDate, tvItemNote, tvCategoryBadge, tvRecurringBadge;
         ImageButton btnDelete;
         Button btnEdit;
 
@@ -94,6 +101,7 @@ public class ExpenseAdapterRoom extends RecyclerView.Adapter<ExpenseAdapterRoom.
             tvItemCategoryDate = itemView.findViewById(R.id.tvItemCategoryDate);
             tvItemNote = itemView.findViewById(R.id.tvItemNote);
             tvCategoryBadge = itemView.findViewById(R.id.tvCategoryBadge);
+            tvRecurringBadge = itemView.findViewById(R.id.tvRecurringBadge);
             btnDelete = itemView.findViewById(R.id.btnDelete);
             btnEdit = itemView.findViewById(R.id.btnEdit);
         }

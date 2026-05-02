@@ -3,10 +3,11 @@ package com.example.expensetracker;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -27,9 +28,11 @@ public class AddExpenseActivity extends AppCompatActivity {
 
     private ExpenseDatabase database;
     private Spinner spinnerAddCategory;
+    private Spinner spinnerRecurringInterval;
     private TextInputEditText etAmount;
     private TextInputEditText etDate;
     private TextInputEditText etNote;
+    private CheckBox cbRecurring;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +49,11 @@ public class AddExpenseActivity extends AppCompatActivity {
 
         TextView tvAddTitle = findViewById(R.id.tvAddTitle);
         spinnerAddCategory = findViewById(R.id.spinnerAddCategory);
+        spinnerRecurringInterval = findViewById(R.id.spinnerRecurringInterval);
         etAmount = findViewById(R.id.etAmount);
         etDate = findViewById(R.id.etDate);
         etNote = findViewById(R.id.etNote);
+        cbRecurring = findViewById(R.id.cbRecurring);
         TextInputLayout tilDate = findViewById(R.id.tilDate);
         MaterialButton btnSaveExpense = findViewById(R.id.btnSaveExpense);
         MaterialButton btnCancel = findViewById(R.id.btnCancel);
@@ -60,6 +65,18 @@ public class AddExpenseActivity extends AppCompatActivity {
         );
         categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerAddCategory.setAdapter(categoryAdapter);
+
+        ArrayAdapter<String> recurringAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                new String[]{"Weekly", "Monthly", "Yearly"}
+        );
+        recurringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerRecurringInterval.setAdapter(recurringAdapter);
+        spinnerRecurringInterval.setVisibility(View.GONE);
+
+        cbRecurring.setOnCheckedChangeListener((buttonView, isChecked) ->
+                spinnerRecurringInterval.setVisibility(isChecked ? View.VISIBLE : View.GONE));
 
         etDate.setOnClickListener(v -> showDatePicker());
         tilDate.setEndIconOnClickListener(v -> showDatePicker());
@@ -73,6 +90,8 @@ public class AddExpenseActivity extends AppCompatActivity {
             String category = intent.getStringExtra("category");
             String date = intent.getStringExtra("date");
             String note = intent.getStringExtra("note");
+            boolean isRecurring = intent.getBooleanExtra("is_recurring", false);
+            String recurringInterval = intent.getStringExtra("recurring_interval");
 
             tvAddTitle.setText("Edit Expense");
             btnSaveExpense.setText("Update Expense");
@@ -80,12 +99,24 @@ public class AddExpenseActivity extends AppCompatActivity {
             etAmount.setText(amount);
             etDate.setText(date);
             etNote.setText(note);
+            cbRecurring.setChecked(isRecurring);
+            spinnerRecurringInterval.setVisibility(isRecurring ? View.VISIBLE : View.GONE);
 
             String[] categories = getResources().getStringArray(R.array.expense_categories);
             for (int i = 0; i < categories.length; i++) {
                 if (categories[i].equals(category)) {
                     spinnerAddCategory.setSelection(i);
                     break;
+                }
+            }
+
+            if (recurringInterval != null) {
+                String[] intervals = {"Weekly", "Monthly", "Yearly"};
+                for (int i = 0; i < intervals.length; i++) {
+                    if (intervals[i].equals(recurringInterval)) {
+                        spinnerRecurringInterval.setSelection(i);
+                        break;
+                    }
                 }
             }
         } else {
@@ -113,9 +144,11 @@ public class AddExpenseActivity extends AppCompatActivity {
         String date = etDate.getText() != null ? etDate.getText().toString().trim() : "";
         String note = etNote.getText() != null ? etNote.getText().toString().trim() : "";
         String category = spinnerAddCategory.getSelectedItem().toString();
+        boolean isRecurring = cbRecurring.isChecked();
+        String recurringInterval = isRecurring
+                ? spinnerRecurringInterval.getSelectedItem().toString()
+                : "None";
 
-
-        // Tied error msg to the fields instead of a Toast
         TextInputLayout tilAmount = findViewById(R.id.tilAmount);
         if (amountText.isEmpty()) {
             tilAmount.setError("Amount is required");
@@ -146,6 +179,14 @@ public class AddExpenseActivity extends AppCompatActivity {
             tilAmount.setError(null);
         }
 
+        TextInputLayout tilDate = findViewById(R.id.tilDate);
+        if (!date.matches("^(0[1-9]|1[0-2])/(0[1-9]|[12]\\d|3[01])/\\d{4}$")) {
+            tilDate.setError("Use MM/DD/YYYY");
+            return;
+        } else {
+            tilDate.setError(null);
+        }
+
         String finalAmount = String.format(Locale.US, "%.2f", amountValue);
 
         if (isEditMode && editingExpenseId != -1) {
@@ -155,10 +196,14 @@ public class AddExpenseActivity extends AppCompatActivity {
                 expense.setCategory(category);
                 expense.setDate(date);
                 expense.setNote(note);
+                expense.setRecurring(isRecurring);
+                expense.setRecurringInterval(recurringInterval);
                 database.expenseDao().updateExpense(expense);
             }
         } else {
             ExpenseEntity expense = new ExpenseEntity(finalAmount, category, date, note);
+            expense.setRecurring(isRecurring);
+            expense.setRecurringInterval(recurringInterval);
             database.expenseDao().insertExpense(expense);
         }
 
@@ -206,7 +251,6 @@ public class AddExpenseActivity extends AppCompatActivity {
                 month,
                 day
         );
-
         datePickerDialog.show();
     }
 }

@@ -24,7 +24,7 @@ public interface ExpenseDao {
     List<ExpenseEntity> getAllExpenses();
 
     @Query("SELECT * FROM expenses WHERE id = :id LIMIT 1")
-    ExpenseEntity getExpenseById (int id);
+    ExpenseEntity getExpenseById(int id);
 
     @Query("SELECT * FROM expenses WHERE (:category = 'All' OR category = :category)")
     List<ExpenseEntity> getExpensesByCategory(String category);
@@ -37,4 +37,10 @@ public interface ExpenseDao {
 
     @Query("SELECT * FROM expenses WHERE category = :category AND substr(date, 1, 2) = :month AND substr(date, 7, 4) = :year")
     List<ExpenseEntity> getExpensesByCategoryAndMonth(String category, String month, String year);
+
+    @Query("SELECT * FROM expenses WHERE is_recurring = 1")
+    List<ExpenseEntity> getRecurringExpenses();
+
+    @Query("SELECT COUNT(*) FROM expenses WHERE amount = :amount AND category = :category AND date = :date AND note = :note")
+    int countExactExpense(String amount, String category, String date, String note);
 }

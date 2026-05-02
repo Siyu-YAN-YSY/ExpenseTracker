@@ -6,8 +6,9 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -35,13 +37,21 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.OutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private final ArrayList<ExpenseEntity> masterList = new ArrayList<>();
     private final ArrayList<ExpenseEntity> filteredList = new ArrayList<>();
 
     private ExpenseAdapterRoom expenseAdapter;
@@ -51,18 +61,32 @@ public class MainActivity extends AppCompatActivity {
     private TextView tvEmptyState;
     private Spinner spinnerMonth;
     private Spinner spinnerCategory;
+    private Spinner spinnerSort;
+    private TextInputEditText etSearchExpense;
     private PieChart pieChart;
     private ExpenseDatabase database;
+
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
 
     private final ActivityResultLauncher<Intent> addExpenseLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == RESULT_OK) {
+                    generateDueRecurringExpenses();
                     setupMonthSpinner();
                     loadExpensesFromDatabase(getSelectedCategory());
                 }
             });
 
-    // Responsible For Setting Up UI, database, and listener
+    private final ActivityResultLauncher<Intent> exportCsvLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Uri uri = result.getData().getData();
+                    if (uri != null) {
+                        exportExpensesToCsv(uri);
+                    }
+                }
+            });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,17 +97,18 @@ public class MainActivity extends AppCompatActivity {
         initializeViews();
 
         database = ExpenseDatabase.getDatabase(this);
+        generateDueRecurringExpenses();
 
-        setupSpinner();
-        setupMonthSpinner();
         setupRecyclerView();
+        setupSpinner();
+        setupSortSpinner();
+        setupMonthSpinner();
         setupListeners();
 
         loadExpensesFromDatabase("All");
         updateBudgetUI();
     }
 
-    // Responsible for adjusting layout padding to avoid overlap with system UI
     private void applyWindowInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -92,15 +117,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
-    // Responsible for initialize the toolbar and attaches it to the activity
-    // Enable menu (info + uninstall) to appear in top-right
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
 
-    // Responsible for finding and assigning all UI components from XML layout
     private void initializeViews() {
         tvTotalAmount = findViewById(R.id.tvTotalAmount);
         tvBudget = findViewById(R.id.tvBudget);
@@ -108,12 +129,11 @@ public class MainActivity extends AppCompatActivity {
         tvEmptyState = findViewById(R.id.tvEmptyState);
         spinnerMonth = findViewById(R.id.spinnerMonth);
         spinnerCategory = findViewById(R.id.spinnerCategory);
+        spinnerSort = findViewById(R.id.spinnerSort);
+        etSearchExpense = findViewById(R.id.etSearchExpense);
         pieChart = findViewById(R.id.pieChart);
     }
 
-
-    // Responsible for setting up category filter dropdown (Spinner)
-    // Load categories from resources and handles selection changes
     private void setupSpinner() {
         ArrayAdapter<CharSequence> filterAdapter = ArrayAdapter.createFromResource(
                 this,
@@ -131,6 +151,50 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    private void setupSortSpinner() {
+        String[] sortOptions = {
+                "Newest First",
+                "Oldest First",
+                "Highest Amount",
+                "Lowest Amount",
+                "Category A-Z"
+        };
+
+        ArrayAdapter<String> sortAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                sortOptions
+        );
+        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSort.setAdapter(sortAdapter);
+
+        spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                applySearchAndSort();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        etSearchExpense.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                applySearchAndSort();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
             }
         });
     }
@@ -169,13 +233,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
     }
 
-    // Responsible for initialize RecyclerView for displaying expense list
-    // Also handles delete and edit actions for each item
     private void setupRecyclerView() {
         RecyclerView recyclerViewExpenses = findViewById(R.id.recyclerViewExpenses);
 
@@ -183,6 +244,8 @@ public class MainActivity extends AppCompatActivity {
                 filteredList,
                 expense -> {
                     database.expenseDao().deleteExpense(expense);
+                    generateDueRecurringExpenses();
+                    setupMonthSpinner();
                     loadExpensesFromDatabase(getSelectedCategory());
                 },
                 this::openEditExpense
@@ -192,9 +255,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerViewExpenses.setAdapter(expenseAdapter);
     }
 
-
-    // Responsible for setting up click listener like
-    // - Add button and Summary Button
     private void setupListeners() {
         FloatingActionButton fabAdd = findViewById(R.id.fabAdd);
         fabAdd.setOnClickListener(v -> {
@@ -204,21 +264,37 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btnSummary).setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, SummaryActivity.class);
-            intent.putExtra("selected_month", spinnerMonth.getSelectedItem() != null
-                    ? spinnerMonth.getSelectedItem().toString()
-                    : "All");
+            intent.putExtra("selected_month", getSelectedMonth());
             intent.putExtra("selected_category", getSelectedCategory());
             startActivity(intent);
         });
 
-        findViewById(R.id.btnSetBudget).setOnClickListener(v -> {
-            showBudgetDialogue();
+        findViewById(R.id.btnInsights).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, InsightsActivity.class);
+            intent.putExtra("selected_month", getSelectedMonth());
+            startActivity(intent);
         });
+
+        findViewById(R.id.btnCategoryBudgets).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, CategoryBudgetActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.btnExportCsv).setOnClickListener(v -> startCsvExport());
+
+        findViewById(R.id.btnSetBudget).setOnClickListener(v -> showBudgetDialogue());
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (database != null) {
+            generateDueRecurringExpenses();
+            setupMonthSpinner();
+            loadExpensesFromDatabase(getSelectedCategory());
+        }
+    }
 
-    // Responsible for open AddExpenseActivity in edit mode
-    // Passes selected expense data through Intent
     private void openEditExpense(ExpenseEntity expense) {
         Intent intent = new Intent(MainActivity.this, AddExpenseActivity.class);
         intent.putExtra("expense_id", expense.getId());
@@ -226,23 +302,27 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("category", expense.getCategory());
         intent.putExtra("date", expense.getDate());
         intent.putExtra("note", expense.getNote());
+        intent.putExtra("is_recurring", expense.isRecurring());
+        intent.putExtra("recurring_interval", expense.getRecurringInterval());
         addExpenseLauncher.launch(intent);
     }
 
-
-    // Responsible for returns currently selected category from Spinner
     private String getSelectedCategory() {
-        return spinnerCategory.getSelectedItem().toString();
+        return spinnerCategory.getSelectedItem() != null
+                ? spinnerCategory.getSelectedItem().toString()
+                : "All";
     }
 
-
-    // Responsible for loading expenses from room database on selected category
-    // Also for updating list, total amount, and pie chart
-    private void loadExpensesFromDatabase(String category) {
-        String selectedMonth = spinnerMonth.getSelectedItem() != null
+    private String getSelectedMonth() {
+        return spinnerMonth.getSelectedItem() != null
                 ? spinnerMonth.getSelectedItem().toString()
                 : "All";
+    }
 
+    private void loadExpensesFromDatabase(String category) {
+        if (database == null) return;
+
+        String selectedMonth = getSelectedMonth();
         List<ExpenseEntity> expenses;
 
         if (selectedMonth.equals("All")) {
@@ -259,19 +339,85 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        filteredList.clear();
-        filteredList.addAll(expenses);
+        masterList.clear();
+        masterList.addAll(expenses);
+        applySearchAndSort();
+    }
 
-        expenseAdapter.notifyDataSetChanged();
+    private void applySearchAndSort() {
+        if (filteredList == null) return;
+
+        String query = etSearchExpense != null && etSearchExpense.getText() != null
+                ? etSearchExpense.getText().toString().trim().toLowerCase(Locale.US)
+                : "";
+
+        filteredList.clear();
+        for (ExpenseEntity expense : masterList) {
+            String note = expense.getNote() == null ? "" : expense.getNote().toLowerCase(Locale.US);
+            String category = expense.getCategory() == null ? "" : expense.getCategory().toLowerCase(Locale.US);
+            String date = expense.getDate() == null ? "" : expense.getDate().toLowerCase(Locale.US);
+            String amount = expense.getAmount() == null ? "" : expense.getAmount().toLowerCase(Locale.US);
+
+            if (query.isEmpty()
+                    || note.contains(query)
+                    || category.contains(query)
+                    || date.contains(query)
+                    || amount.contains(query)) {
+                filteredList.add(expense);
+            }
+        }
+
+        String sort = spinnerSort != null && spinnerSort.getSelectedItem() != null
+                ? spinnerSort.getSelectedItem().toString()
+                : "Newest First";
+
+        switch (sort) {
+            case "Oldest First":
+                Collections.sort(filteredList, (a, b) -> compareDates(a, b));
+                break;
+            case "Highest Amount":
+                Collections.sort(filteredList, (a, b) -> Double.compare(b.getAmountValue(), a.getAmountValue()));
+                break;
+            case "Lowest Amount":
+                Collections.sort(filteredList, (a, b) -> Double.compare(a.getAmountValue(), b.getAmountValue()));
+                break;
+            case "Category A-Z":
+                Collections.sort(filteredList, (a, b) -> a.getCategory().compareToIgnoreCase(b.getCategory()));
+                break;
+            case "Newest First":
+            default:
+                Collections.sort(filteredList, (a, b) -> -compareDates(a, b));
+                break;
+        }
+
+        if (expenseAdapter != null) {
+            expenseAdapter.notifyDataSetChanged();
+        }
         updateEmptyState();
         updateTotalExpense();
         updateBudgetUI();
         updatePieChart();
     }
 
+    private int compareDates(ExpenseEntity a, ExpenseEntity b) {
+        Date dateA = parseDate(a.getDate());
+        Date dateB = parseDate(b.getDate());
+        if (dateA == null && dateB == null) return Integer.compare(a.getId(), b.getId());
+        if (dateA == null) return -1;
+        if (dateB == null) return 1;
+        int result = dateA.compareTo(dateB);
+        if (result == 0) result = Integer.compare(a.getId(), b.getId());
+        return result;
+    }
 
-    // Responsible for calculating total expense using ExpenseCalculator class
-    // Updates total amount TextView
+    private Date parseDate(String value) {
+        try {
+            return dateFormat.parse(value);
+        } catch (ParseException | NullPointerException e) {
+            return null;
+        }
+    }
+
     private void updateTotalExpense() {
         double total = ExpenseCalculator.getTotal(filteredList);
         tvTotalAmount.setText(String.format(Locale.US, "$%.2f", total));
@@ -312,16 +458,24 @@ public class MainActivity extends AppCompatActivity {
         input.setGravity(Gravity.CENTER);
         input.setTextSize(16f);
 
+        float currentBudget = getBudget();
+        if (currentBudget > 0) {
+            input.setText(String.format(Locale.US, "%.2f", currentBudget));
+        }
+
         layout.addView(input);
         builder.setView(layout);
 
         builder.setPositiveButton("Save", (dialogue, which) -> {
-            String value = input.getText().toString();
-
+            String value = input.getText().toString().trim();
             if (!value.isEmpty()) {
-                float budget = Float.parseFloat(value);
-                saveBudget(budget);
-                updateBudgetUI();
+                try {
+                    float budget = Float.parseFloat(value);
+                    saveBudget(budget);
+                    updateBudgetUI();
+                } catch (NumberFormatException e) {
+                    Toast.makeText(this, "Enter a valid budget", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         builder.setNegativeButton("Cancel", null).show();
@@ -332,19 +486,17 @@ public class MainActivity extends AppCompatActivity {
         double totalExpense = ExpenseCalculator.getTotal(filteredList);
         double remaining;
 
-        String selectedMonth = spinnerMonth.getSelectedItem() != null
-                ? spinnerMonth.getSelectedItem().toString()
-                : "All";
+        String selectedMonth = getSelectedMonth();
 
         if (budget == 0f) {
             tvBudget.setText("Budget: Not Set");
-            tvRemaining.setText("Set a budget to track spending");
+            tvRemaining.setText("Set a monthly budget to track spending");
             tvRemaining.setTextColor(Color.GRAY);
             return;
         } else {
             tvBudget.setText(String.format(Locale.US, "Budget: $%.2f", budget));
             if (selectedMonth.equals("All")) {
-                tvRemaining.setText("Select a month to view remaining");
+                tvRemaining.setText("Select a month to view remaining budget");
                 tvRemaining.setTextColor(Color.GRAY);
                 return;
             } else {
@@ -356,21 +508,32 @@ public class MainActivity extends AppCompatActivity {
         tvRemaining.setText(String.format(Locale.US, "Remaining: $%.2f", remaining));
 
         if (remaining < 0) {
-            tvRemaining.setTextColor(android.graphics.Color.RED);
+            tvRemaining.setTextColor(Color.RED);
         } else {
-            tvRemaining.setTextColor(android.graphics.Color.parseColor("#2E7D32"));
+            tvRemaining.setTextColor(Color.parseColor("#2E7D32"));
         }
     }
 
-    // Responsible for showing "No expense yet" message when list is empty
-    // And hiding it when data exists
     private void updateEmptyState() {
-        tvEmptyState.setVisibility(filteredList.isEmpty() ? View.VISIBLE : View.GONE);
+        if (!filteredList.isEmpty()) {
+            tvEmptyState.setVisibility(View.GONE);
+            return;
+        }
+
+        tvEmptyState.setVisibility(View.VISIBLE);
+        String query = etSearchExpense != null && etSearchExpense.getText() != null
+                ? etSearchExpense.getText().toString().trim()
+                : "";
+
+        if (!query.isEmpty()) {
+            tvEmptyState.setText("No matching expenses found. Try a different search.");
+        } else if (!getSelectedMonth().equals("All") || !getSelectedCategory().equals("All")) {
+            tvEmptyState.setText("No expenses match this filter yet.");
+        } else {
+            tvEmptyState.setText("No expenses yet. Tap + to add your first expense.");
+        }
     }
 
-
-    // Responsible for generating and displaying pie chart based on expense categories
-    // Also uses ExpenseCalculator Class to calculate category totals
     private void updatePieChart() {
         double food = ExpenseCalculator.getCategoryTotal(filteredList, "Food");
         double entertainment = ExpenseCalculator.getCategoryTotal(filteredList, "Entertainment");
@@ -410,25 +573,25 @@ public class MainActivity extends AppCompatActivity {
         for (PieEntry entry : entries) {
             switch (entry.getLabel()) {
                 case "Food":
-                    colors.add(android.graphics.Color.parseColor("#4CAF50"));
+                    colors.add(Color.parseColor("#4CAF50"));
                     break;
                 case "Entertainment":
-                    colors.add(android.graphics.Color.parseColor("#FF0000"));
+                    colors.add(Color.parseColor("#F44336"));
                     break;
                 case "Transport":
-                    colors.add(android.graphics.Color.parseColor("#2196F3"));
+                    colors.add(Color.parseColor("#2196F3"));
                     break;
                 case "Shopping":
-                    colors.add(android.graphics.Color.parseColor("#9C27B0"));
+                    colors.add(Color.parseColor("#9C27B0"));
                     break;
                 case "Bills":
-                    colors.add(android.graphics.Color.parseColor("#FF9800"));
+                    colors.add(Color.parseColor("#FF9800"));
                     break;
                 case "Other":
-                    colors.add(android.graphics.Color.parseColor("#607D8B"));
+                    colors.add(Color.parseColor("#607D8B"));
                     break;
                 default:
-                    colors.add(android.graphics.Color.parseColor("#BDBDBD"));
+                    colors.add(Color.parseColor("#BDBDBD"));
                     break;
             }
         }
@@ -455,26 +618,136 @@ public class MainActivity extends AppCompatActivity {
         pieChart.invalidate();
     }
 
-
-
-    // Responsible for add a slice to pie chart
-    // Only adds entry if value is greater than 0
     private void addPieEntry(ArrayList<PieEntry> entries, double value, String label) {
         if (value > 0) {
             entries.add(new PieEntry((float) value, label));
         }
     }
 
+    private void startCsvExport() {
+        List<ExpenseEntity> allExpenses = database.expenseDao().getAllExpenses();
+        if (allExpenses == null || allExpenses.isEmpty()) {
+            Toast.makeText(this, "No expenses to export yet", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-    // Responsible for Inflates menu (info + uninstall) into toolbar
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/csv");
+        intent.putExtra(Intent.EXTRA_TITLE, "expense_tracker_export.csv");
+        exportCsvLauncher.launch(intent);
+    }
+
+    private void exportExpensesToCsv(Uri uri) {
+        List<ExpenseEntity> allExpenses = database.expenseDao().getAllExpenses();
+        StringBuilder csv = new StringBuilder();
+        csv.append("Amount,Category,Date,Note,Recurring,Recurring Interval\n");
+
+        for (ExpenseEntity expense : allExpenses) {
+            csv.append(csvEscape(expense.getAmount())).append(",")
+                    .append(csvEscape(expense.getCategory())).append(",")
+                    .append(csvEscape(expense.getDate())).append(",")
+                    .append(csvEscape(expense.getNote())).append(",")
+                    .append(expense.isRecurring() ? "Yes" : "No").append(",")
+                    .append(csvEscape(expense.getRecurringInterval())).append("\n");
+        }
+
+        try (OutputStream outputStream = getContentResolver().openOutputStream(uri)) {
+            if (outputStream != null) {
+                outputStream.write(csv.toString().getBytes());
+                Toast.makeText(this, "CSV exported successfully", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Export failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private String csvEscape(String value) {
+        if (value == null) value = "";
+        String escaped = value.replace("\"", "\"\"");
+        return "\"" + escaped + "\"";
+    }
+
+    private void generateDueRecurringExpenses() {
+        if (database == null) return;
+
+        List<ExpenseEntity> recurringExpenses = database.expenseDao().getRecurringExpenses();
+        if (recurringExpenses == null || recurringExpenses.isEmpty()) return;
+
+        Calendar today = Calendar.getInstance();
+        today.set(Calendar.HOUR_OF_DAY, 0);
+        today.set(Calendar.MINUTE, 0);
+        today.set(Calendar.SECOND, 0);
+        today.set(Calendar.MILLISECOND, 0);
+
+        boolean insertedNewExpense = false;
+
+        for (ExpenseEntity recurringExpense : recurringExpenses) {
+            Date startDate = parseDate(recurringExpense.getDate());
+            if (startDate == null) continue;
+
+            Calendar nextDate = Calendar.getInstance();
+            nextDate.setTime(startDate);
+            nextDate.set(Calendar.HOUR_OF_DAY, 0);
+            nextDate.set(Calendar.MINUTE, 0);
+            nextDate.set(Calendar.SECOND, 0);
+            nextDate.set(Calendar.MILLISECOND, 0);
+
+            int safetyCounter = 0;
+            while (safetyCounter < 120) {
+                addRecurringInterval(nextDate, recurringExpense.getRecurringInterval());
+
+                if (nextDate.after(today)) {
+                    break;
+                }
+
+                String generatedDate = dateFormat.format(nextDate.getTime());
+                String note = recurringExpense.getNote() == null ? "" : recurringExpense.getNote();
+
+                int duplicateCount = database.expenseDao().countExactExpense(
+                        recurringExpense.getAmount(),
+                        recurringExpense.getCategory(),
+                        generatedDate,
+                        note
+                );
+
+                if (duplicateCount == 0) {
+                    ExpenseEntity generated = new ExpenseEntity(
+                            recurringExpense.getAmount(),
+                            recurringExpense.getCategory(),
+                            generatedDate,
+                            note
+                    );
+                    generated.setRecurring(false);
+                    generated.setRecurringInterval("None");
+                    database.expenseDao().insertExpense(generated);
+                    insertedNewExpense = true;
+                }
+                safetyCounter++;
+            }
+        }
+
+        if (insertedNewExpense) {
+            Toast.makeText(this, "Recurring expenses updated", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void addRecurringInterval(Calendar calendar, String interval) {
+        if ("Weekly".equals(interval)) {
+            calendar.add(Calendar.WEEK_OF_YEAR, 1);
+        } else if ("Yearly".equals(interval)) {
+            calendar.add(Calendar.YEAR, 1);
+        } else {
+            calendar.add(Calendar.MONTH, 1);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
-
-    // Responsible for handling menu item clicks like Info and Unstall
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -484,9 +757,11 @@ public class MainActivity extends AppCompatActivity {
                     .setTitle("Expense Tracker App")
                     .setMessage("Track your daily spending easily.\n\n"
                             + "• Add, edit, and delete expenses\n"
-                            + "• Filter by category\n"
-                            + "• View totals and charts\n"
-                            + "• Understand your spending habits\n\n"
+                            + "• Filter, search, and sort expenses\n"
+                            + "• Compare this month to last month\n"
+                            + "• View charts, smart insights, and budget warnings\n"
+                            + "• Export your expense history to CSV\n"
+                            + "• Mark expenses as recurring\n\n"
                             + "Stay organized and in control of your finances!")
                     .setPositiveButton("OK", null)
                     .show();

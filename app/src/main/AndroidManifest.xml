@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES"/>
+    <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ExpenseTracker">
 
+        <activity android:name=".CategoryBudgetActivity" />
+        <activity android:name=".InsightsActivity" />
         <activity android:name=".AddExpenseActivity" />
         <activity android:name=".SummaryActivity" />
 
