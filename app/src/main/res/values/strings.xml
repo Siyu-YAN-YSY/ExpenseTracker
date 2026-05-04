@@ -1,5 +1,24 @@
 <resources>
     <string name="app_name">ExpenseTracker</string>
+    <string name="amount">Amount</string>
+    <string name="add_expense">Add Expense</string>
+    <string name="enter_amount">Enter amount</string>
+    <string name="category">Category</string>
+    <string name="date">Date</string>
+    <string name="mm_dd_yyyy">MM/DD/YYYY</string>
+    <string name="note">Note</string>
+    <string name="enter_note">Enter note</string>
+    <string name="recurring_expense">Recurring expense</string>
+    <string name="save_expense">Save Expense</string>
+    <string name="cancel">Cancel</string>
+    <string name="edit_expense">Edit Expense</string>
+    <string name="update_expense">Update Expense</string>
+    <string name="set_monthly_budget">Set Monthly Budget</string>
+    <string name="budget_not_set">Budget: Not Set</string>
+    <string name="set_a_monthly_budget_to_track_spending">Set a monthly budget to track spending</string>
+    <string name="select_a_month_to_view_remaining_budget">Select a month to view remaining budget</string>
+    <string name="no_matching_expenses_found_try_a_different_search">No matching expenses found. Try a different search.</string>
+    <string name="wallet_logo">Wallet logo</string>
 
     <string-array name="expense_categories">
         <item>Food</item>

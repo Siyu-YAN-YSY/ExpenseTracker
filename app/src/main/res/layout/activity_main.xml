@@ -23,9 +23,40 @@
                 android:layout_height="wrap_content"
                 android:background="#F7F8FA"
                 android:paddingStart="20dp"
+                android:paddingTop="12dp"
                 android:paddingEnd="20dp"
-                app:title="Expense Tracker"
-                app:titleTextAppearance="@style/ToolbarTitleStyle" />
+                android:paddingBottom="12dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_vertical"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imgToolbarLogo"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="8dp"
+                        android:contentDescription="@string/wallet_logo"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/logo_wallet"
+                        app:shapeAppearanceOverlay="@style/RoundedLogo"
+                        app:strokeColor="@color/blue_primary"
+                        app:strokeWidth="2dp"/>
+
+                    <TextView
+                        android:id="@+id/tvToolbarTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ET Wallet"
+                        android:textColor="#111111"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </androidx.appcompat.widget.Toolbar>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -256,6 +287,8 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         android:contentDescription="Add Expense"
-        android:src="@android:drawable/ic_input_add" />
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="@color/blue_primary"
+        app:tint="@color/white" />
 
 </FrameLayout>

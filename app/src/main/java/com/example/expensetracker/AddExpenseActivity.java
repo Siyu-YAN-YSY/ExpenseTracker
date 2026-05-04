@@ -93,8 +93,8 @@ public class AddExpenseActivity extends AppCompatActivity {
             boolean isRecurring = intent.getBooleanExtra("is_recurring", false);
             String recurringInterval = intent.getStringExtra("recurring_interval");
 
-            tvAddTitle.setText("Edit Expense");
-            btnSaveExpense.setText("Update Expense");
+            tvAddTitle.setText(R.string.edit_expense);
+            btnSaveExpense.setText(R.string.update_expense);
 
             etAmount.setText(amount);
             etDate.setText(date);

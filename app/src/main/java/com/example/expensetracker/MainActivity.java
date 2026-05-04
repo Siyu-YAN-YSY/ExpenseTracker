@@ -44,7 +44,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -120,6 +120,10 @@ public class MainActivity extends AppCompatActivity {
     private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayShowTitleEnabled(false);
+        }
     }
 
     private void initializeViews() {
@@ -373,20 +377,20 @@ public class MainActivity extends AppCompatActivity {
 
         switch (sort) {
             case "Oldest First":
-                Collections.sort(filteredList, (a, b) -> compareDates(a, b));
+                filteredList.sort(this::compareDates);
                 break;
             case "Highest Amount":
-                Collections.sort(filteredList, (a, b) -> Double.compare(b.getAmountValue(), a.getAmountValue()));
+                filteredList.sort((a, b) -> Double.compare(b.getAmountValue(), a.getAmountValue()));
                 break;
             case "Lowest Amount":
-                Collections.sort(filteredList, (a, b) -> Double.compare(a.getAmountValue(), b.getAmountValue()));
+                filteredList.sort(Comparator.comparingDouble(ExpenseEntity::getAmountValue));
                 break;
             case "Category A-Z":
-                Collections.sort(filteredList, (a, b) -> a.getCategory().compareToIgnoreCase(b.getCategory()));
+                filteredList.sort((a, b) -> a.getCategory().compareToIgnoreCase(b.getCategory()));
                 break;
             case "Newest First":
             default:
-                Collections.sort(filteredList, (a, b) -> -compareDates(a, b));
+                filteredList.sort((a, b) -> -compareDates(a, b));
                 break;
         }
 
@@ -439,7 +443,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         TextView title = new TextView(this);
-        title.setText("Set Monthly Budget");
+        title.setText(R.string.set_monthly_budget);
         title.setTextSize(18f);
         title.setPadding(0, 30, 0, 10);
         title.setGravity(Gravity.CENTER);
@@ -489,14 +493,14 @@ public class MainActivity extends AppCompatActivity {
         String selectedMonth = getSelectedMonth();
 
         if (budget == 0f) {
-            tvBudget.setText("Budget: Not Set");
-            tvRemaining.setText("Set a monthly budget to track spending");
+            tvBudget.setText(R.string.budget_not_set);
+            tvRemaining.setText(R.string.set_a_monthly_budget_to_track_spending);
             tvRemaining.setTextColor(Color.GRAY);
             return;
         } else {
             tvBudget.setText(String.format(Locale.US, "Budget: $%.2f", budget));
             if (selectedMonth.equals("All")) {
-                tvRemaining.setText("Select a month to view remaining budget");
+                tvRemaining.setText(R.string.select_a_month_to_view_remaining_budget);
                 tvRemaining.setTextColor(Color.GRAY);
                 return;
             } else {
@@ -526,7 +530,7 @@ public class MainActivity extends AppCompatActivity {
                 : "";
 
         if (!query.isEmpty()) {
-            tvEmptyState.setText("No matching expenses found. Try a different search.");
+            tvEmptyState.setText(R.string.no_matching_expenses_found_try_a_different_search);
         } else if (!getSelectedMonth().equals("All") || !getSelectedCategory().equals("All")) {
             tvEmptyState.setText("No expenses match this filter yet.");
         } else {
@@ -754,7 +758,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.info) {
             new AlertDialog.Builder(this)
-                    .setTitle("Expense Tracker App")
+                    .setTitle("ET Wallet App")
                     .setMessage("Track your daily spending easily.\n\n"
                             + "• Add, edit, and delete expenses\n"
                             + "• Filter, search, and sort expenses\n"
