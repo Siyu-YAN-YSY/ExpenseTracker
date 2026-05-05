@@ -1,5 +1,6 @@
 package com.example.expensetracker;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -123,15 +124,15 @@ public class InsightsActivity extends AppCompatActivity {
                 previous.get(Calendar.MONTH) + 1,
                 previous.get(Calendar.YEAR)));
 
-        tvThisMonthTotal.setText(String.format(Locale.US, "$%.2f", currentTotal));
-        tvLastMonthTotal.setText(String.format(Locale.US, "$%.2f", previousTotal));
+        tvThisMonthTotal.setText(CurrencyManager.formatAmount(this, currentTotal));
+        tvLastMonthTotal.setText(CurrencyManager.formatAmount(this, previousTotal));
 
         if (previousTotal == 0 && currentTotal > 0) {
-            tvDifference.setText(String.format(Locale.US, "+$%.2f compared to last month", difference));
+            tvDifference.setText("+" + CurrencyManager.formatAmount(this, difference) + " compared to last month");
         } else {
-            tvDifference.setText(String.format(Locale.US, "%s$%.2f (%.1f%%) compared to last month",
+            tvDifference.setText(String.format(Locale.US, "%s%s (%.1f%%) compared to last month",
                     difference >= 0 ? "+" : "-",
-                    Math.abs(difference),
+                    CurrencyManager.formatAmount(this, Math.abs(difference)),
                     Math.abs(percentChange)));
         }
         tvDifference.setTextColor(difference > 0 ? Color.parseColor("#C62828") : Color.parseColor("#2E7D32"));
@@ -155,22 +156,22 @@ public class InsightsActivity extends AppCompatActivity {
             tvTopCategory.setText("No category data yet.");
             tvHighestExpense.setText("No expenses recorded for this month.");
         } else {
-            tvTopCategory.setText(String.format(Locale.US, "%s is highest at $%.2f", topCategory, topCategoryTotal));
+            tvTopCategory.setText(topCategory + " is highest at " + CurrencyManager.formatAmount(this, topCategoryTotal));
             if (highestExpense != null) {
                 String note = highestExpense.getNote() == null || highestExpense.getNote().trim().isEmpty()
                         ? "No note"
                         : highestExpense.getNote();
                 tvHighestExpense.setText(String.format(Locale.US,
-                        "$%.2f • %s • %s • %s",
-                        highestExpense.getAmountValue(),
+                        "%s • %s • %s • %s",
+                        CurrencyManager.formatAmount(this, highestExpense.getAmountValue()),
                         highestExpense.getCategory(),
                         highestExpense.getDate(),
                         note));
             }
         }
 
-        tvDailyAverage.setText(String.format(Locale.US, "$%.2f per day", dailyAverage));
-        tvProjectedSpending.setText(String.format(Locale.US, "$%.2f projected for the month", projectedMonthlySpending));
+        tvDailyAverage.setText(CurrencyManager.formatAmount(this, dailyAverage) + " per day");
+        tvProjectedSpending.setText(CurrencyManager.formatAmount(this, projectedMonthlySpending) + " projected for the month");
 
         tvInsightsList.setText(buildRecommendationText(
                 currentTotal,
@@ -303,40 +304,41 @@ public class InsightsActivity extends AppCompatActivity {
         if (previousTotal == 0) {
             builder.append("• This is the first month with comparison data, so next month will be more meaningful.\n");
         } else if (difference > 0) {
-            builder.append(String.format(Locale.US,
-                    "• Spending increased by $%.2f compared to last month. Check which categories changed the most.\n",
-                    difference));
+            builder.append("• Spending increased by ")
+                    .append(CurrencyManager.formatAmount(this, difference))
+                    .append(" compared to last month. Check which categories changed the most.\n");
         } else if (difference < 0) {
-            builder.append(String.format(Locale.US,
-                    "• Spending decreased by $%.2f compared to last month. Nice improvement.\n",
-                    Math.abs(difference)));
+            builder.append("• Spending decreased by ")
+                    .append(CurrencyManager.formatAmount(this, Math.abs(difference)))
+                    .append(" compared to last month. Nice improvement.\n");
         } else {
             builder.append("• Spending is exactly the same as last month.\n");
         }
 
-        builder.append(String.format(Locale.US,
-                "• Your highest category is %s at $%.2f.\n",
-                topCategory,
-                topCategoryTotal));
+        builder.append("• Your highest category is ")
+                .append(topCategory)
+                .append(" at ")
+                .append(CurrencyManager.formatAmount(this, topCategoryTotal))
+                .append(".\n");
 
-        builder.append(String.format(Locale.US,
-                "• You are spending about $%.2f per day.\n",
-                dailyAverage));
+        builder.append("• You are spending about ")
+                .append(CurrencyManager.formatAmount(this, dailyAverage))
+                .append(" per day.\n");
 
         if (monthlyBudget > 0) {
             double remaining = monthlyBudget - currentTotal;
             if (remaining < 0) {
-                builder.append(String.format(Locale.US,
-                        "• You are already $%.2f over your monthly budget.\n",
-                        Math.abs(remaining)));
+                builder.append("• You are already ")
+                        .append(CurrencyManager.formatAmount(this, Math.abs(remaining)))
+                        .append(" over your monthly budget.\n");
             } else if (projectedMonthlySpending > monthlyBudget) {
-                builder.append(String.format(Locale.US,
-                        "• At this pace, you may go over budget by $%.2f.\n",
-                        projectedMonthlySpending - monthlyBudget));
+                builder.append("• At this pace, you may go over budget by ")
+                        .append(CurrencyManager.formatAmount(this, projectedMonthlySpending - monthlyBudget))
+                        .append(".\n");
             } else {
-                builder.append(String.format(Locale.US,
-                        "• At this pace, you should stay under budget by about $%.2f.\n",
-                        monthlyBudget - projectedMonthlySpending));
+                builder.append("• At this pace, you should stay under budget by about ")
+                        .append(CurrencyManager.formatAmount(this, monthlyBudget - projectedMonthlySpending))
+                        .append(".\n");
             }
         } else {
             builder.append("• Set a monthly budget to unlock stronger budget warnings.\n");
@@ -346,15 +348,17 @@ public class InsightsActivity extends AppCompatActivity {
         for (String category : categories) {
             float categoryBudget = categoryBudgetPrefs.getFloat("budget_" + category, 0f);
             double spent = categoryTotals.get(category) == null ? 0 : categoryTotals.get(category);
+
             if (categoryBudget > 0 && spent > categoryBudget) {
-                builder.append(String.format(Locale.US,
-                        "• %s is over its category budget by $%.2f.\n",
-                        category,
-                        spent - categoryBudget));
+                builder.append("• ")
+                        .append(category)
+                        .append(" is over its category budget by ")
+                        .append(CurrencyManager.formatAmount(this, spent - categoryBudget))
+                        .append(".\n");
             } else if (categoryBudget > 0 && spent >= categoryBudget * 0.80) {
-                builder.append(String.format(Locale.US,
-                        "• %s is close to its category budget.\n",
-                        category));
+                builder.append("• ")
+                        .append(category)
+                        .append(" is close to its category budget.\n");
             }
         }
 
@@ -403,5 +407,9 @@ public class InsightsActivity extends AppCompatActivity {
 
         barChartComparison.animateY(900);
         barChartComparison.invalidate();
+    }
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleManager.applyLanguage(newBase));
     }
 }

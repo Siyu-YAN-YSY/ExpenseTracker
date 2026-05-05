@@ -43,4 +43,7 @@ public interface ExpenseDao {
 
     @Query("SELECT COUNT(*) FROM expenses WHERE amount = :amount AND category = :category AND date = :date AND note = :note")
     int countExactExpense(String amount, String category, String date, String note);
+
+    @Query("DELETE FROM expenses")
+    void deleteAllExpenses();
 }

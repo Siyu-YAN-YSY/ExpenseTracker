@@ -7,10 +7,11 @@
         <item name="colorOnSecondary">@color/white</item>
 
         <item name="colorSurface">@color/surface_light</item>
-        <item name="colorOnSurface">@color/text_dark</item>
+        <item name="colorOnSurface">@color/text_primary</item>
 
         <item name="android:statusBarColor">@color/blue_primary_dark</item>
         <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowBackground">@color/screen_background</item>
     </style>
 
     <style name="Theme.ExpenseTracker" parent="Base.Theme.ExpenseTracker" />

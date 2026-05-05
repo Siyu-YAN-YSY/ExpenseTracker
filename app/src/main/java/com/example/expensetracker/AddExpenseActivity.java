@@ -1,6 +1,7 @@
 package com.example.expensetracker;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -252,5 +253,10 @@ public class AddExpenseActivity extends AppCompatActivity {
                 day
         );
         datePickerDialog.show();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleManager.applyLanguage(newBase));
     }
 }

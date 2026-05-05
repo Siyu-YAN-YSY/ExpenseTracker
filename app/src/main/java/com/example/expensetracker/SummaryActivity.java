@@ -1,5 +1,6 @@
 package com.example.expensetracker;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,7 +11,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import java.util.List;
-import java.util.Locale;
 
 public class SummaryActivity extends AppCompatActivity {
     private TextView tvFoodTotal;
@@ -49,7 +49,6 @@ public class SummaryActivity extends AppCompatActivity {
         String selectedCategory = getIntent().getStringExtra("selected_category");
 
         if (selectedMonth == null) selectedMonth = "All";
-
         if (selectedCategory == null) selectedCategory = "All";
 
         List<ExpenseEntity> expenses;
@@ -80,7 +79,12 @@ public class SummaryActivity extends AppCompatActivity {
             }
         }
 
-        double food = 0, entertainment = 0, transport = 0, shopping = 0, bills = 0, other = 0;
+        double food = 0;
+        double entertainment = 0;
+        double transport = 0;
+        double shopping = 0;
+        double bills = 0;
+        double other = 0;
 
         for (ExpenseEntity expense : expenses) {
             double amount = expense.getAmountValue();
@@ -109,12 +113,17 @@ public class SummaryActivity extends AppCompatActivity {
 
         double grandTotal = food + entertainment + transport + shopping + bills + other;
 
-        tvFoodTotal.setText(String.format(Locale.US, "$%.2f", food));
-        tvEntertainmentTotal.setText(String.format(Locale.US, "$%.2f", entertainment));
-        tvTransportTotal.setText(String.format(Locale.US, "$%.2f", transport));
-        tvShoppingTotal.setText(String.format(Locale.US, "$%.2f", shopping));
-        tvBillsTotal.setText(String.format(Locale.US, "$%.2f", bills));
-        tvOtherTotal.setText(String.format(Locale.US, "$%.2f", other));
-        tvGrandTotal.setText(String.format(Locale.US, "$%.2f", grandTotal));
+        tvFoodTotal.setText(CurrencyManager.formatAmount(this, food));
+        tvEntertainmentTotal.setText(CurrencyManager.formatAmount(this, entertainment));
+        tvTransportTotal.setText(CurrencyManager.formatAmount(this, transport));
+        tvShoppingTotal.setText(CurrencyManager.formatAmount(this, shopping));
+        tvBillsTotal.setText(CurrencyManager.formatAmount(this, bills));
+        tvOtherTotal.setText(CurrencyManager.formatAmount(this, other));
+        tvGrandTotal.setText(CurrencyManager.formatAmount(this, grandTotal));
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleManager.applyLanguage(newBase));
     }
 }

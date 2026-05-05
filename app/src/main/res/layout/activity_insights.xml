@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="Analyzing this month"
+            android:text="@string/analyzing_this_month"
             android:textColor="#777777"
             android:textSize="15sp" />
 
@@ -35,10 +35,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="Back to Home"
+            android:text="@string/back_to_home"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            app:backgroundTint="#6A4FB3"
+            app:backgroundTint="@color/blue_primary"
             app:cornerRadius="24dp" />
 
         <com.google.android.material.card.MaterialCardView
@@ -58,7 +58,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Spending Health Score"
+                    android:text="@string/spending_health_score"
                     android:textColor="#2E7D32"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -68,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="100/100"
+                    android:text="@string/_100_100"
                     android:textColor="#1B5E20"
                     android:textSize="38sp"
                     android:textStyle="bold" />
@@ -107,7 +107,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Selected Month"
+                        android:text="@string/selected_month"
                         android:textColor="#777777"
                         android:textSize="13sp" />
 
@@ -116,7 +116,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="$0.00"
+                        android:text="@string/_0_00"
                         android:textColor="#222222"
                         android:textSize="24sp"
                         android:textStyle="bold" />

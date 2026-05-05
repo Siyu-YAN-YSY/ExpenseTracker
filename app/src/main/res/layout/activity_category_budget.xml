@@ -4,7 +4,7 @@
     android:id="@+id/category_budget_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F8FA"
+    android:background="@color/screen_background"
     android:fillViewport="true">
 
     <LinearLayout
@@ -16,8 +16,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Category Budgets"
-            android:textColor="#222222"
+            android:text="@string/category_budgets"
+            android:textColor="@color/text_primary"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -25,17 +25,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="Set optional limits for each category. Leave a category blank if you do not want a limit."
-            android:textColor="#777777"
+            android:text="@string/set_optional_limits_for_each_category"
+            android:textColor="@color/text_secondary"
             android:textSize="15sp" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="@color/surface_light"
             app:cardCornerRadius="18dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:strokeColor="@color/divider_gray"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,9 +46,11 @@
                 android:padding="18dp">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilFoodBudget"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Food budget">
+                    android:hint="@string/food_budget"
+                    app:prefixText="$">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etFoodBudget"
@@ -56,10 +60,12 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilEntertainmentBudget"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:hint="Entertainment budget">
+                    android:hint="@string/entertainment_budget"
+                    app:prefixText="$">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etEntertainmentBudget"
@@ -69,10 +75,12 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilTransportBudget"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:hint="Transport budget">
+                    android:hint="@string/transport_budget"
+                    app:prefixText="$">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etTransportBudget"
@@ -82,10 +90,12 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilShoppingBudget"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:hint="Shopping budget">
+                    android:hint="@string/shopping_budget"
+                    app:prefixText="$">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etShoppingBudget"
@@ -95,10 +105,12 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilBillsBudget"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:hint="Bills budget">
+                    android:hint="@string/bills_budget"
+                    app:prefixText="$">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etBillsBudget"
@@ -108,10 +120,12 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/tilOtherBudget"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:hint="Other budget">
+                    android:hint="@string/other_budget"
+                    app:prefixText="$">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/etOtherBudget"
@@ -128,7 +142,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="Save Category Budgets"
+            android:text="@string/save_category_budgets"
             android:textAllCaps="false"
             app:cornerRadius="24dp" />
 
@@ -138,9 +152,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="24dp"
-            android:text="Back"
+            android:text="@string/back"
             android:textAllCaps="false"
-            app:backgroundTint="#B0B0B0"
+            app:backgroundTint="@color/divider_gray"
             app:cornerRadius="24dp" />
 
     </LinearLayout>

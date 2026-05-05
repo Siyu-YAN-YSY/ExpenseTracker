@@ -1,0 +1,96 @@
+<resources>
+    <string name="app_name">ET钱包</string>
+    <string name="settings">设置</string>
+    <string name="language">语言</string>
+    <string name="choose_app_language">选择应用语言</string>
+    <string name="add_expense">添加支出</string>
+    <string name="edit_expense">编辑支出</string>
+    <string name="save_expense">保存支出</string>
+    <string name="update_expense">更新支出</string>
+    <string name="category">类别</string>
+    <string name="amount">金额</string>
+    <string name="date">日期</string>
+    <string name="note">备注</string>
+    <string name="cancel">取消</string>
+    <string name="enter_amount">输入金额</string>
+    <string name="enter_note">输入备注</string>
+    <string name="mm_dd_yyyy">月/日/年</string>
+    <string name="recurring_expense">周期性支出</string>
+    <string name="profile">个人资料</string>
+    <string name="welcome_back">欢迎回来</string>
+    <string name="track_your_spending">记录你的支出</string>
+    <string name="home">主页</string>
+    <string name="set_monthly_budget">设置每月预算</string>
+    <string name="budget_not_set">预算：未设置</string>
+    <string name="set_a_monthly_budget_to_track_spending">设置每月预算以跟踪支出</string>
+    <string name="select_a_month_to_view_remaining_budget">选择月份以查看剩余预算</string>
+    <string name="no_matching_expenses_found_try_a_different_search">未找到匹配的支出，请尝试其他搜索。</string>
+    <string name="wallet_logo">钱包标志</string>
+    <string name="back_to_home">返回首页</string>
+    <string name="analyzing_this_month">分析本月</string>
+    <string name="spending_health_score">支出健康评分</string>
+    <string name="_100_100">100/100</string>
+    <string name="selected_month">所选月份</string>
+    <string name="_0_00">$0.00</string>
+    <string name="add_expense_1">添加支出</string>
+    <string name="good_morning">早上好</string>
+    <string name="good_afternoon">下午好</string>
+    <string name="good_evening">晚上好</string>
+
+    <string-array name="expense_categories">
+        <item>餐饮</item>
+        <item>娱乐</item>
+        <item>交通</item>
+        <item>购物</item>
+        <item>账单</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="filter_categories">
+        <item>全部</item>
+        <item>餐饮</item>
+        <item>娱乐</item>
+        <item>交通</item>
+        <item>购物</item>
+        <item>账单</item>
+        <item>其他</item>
+    </string-array>
+
+    <string name="total_expense">总支出</string>
+    <string name="amount_zero">$0.00</string>
+    <string name="amount_zero_plain">0.00</string>
+    <string name="set_budget">设置预算</string>
+    <string name="category_budgets">分类预算</string>
+    <string name="view_smart_insights">查看智能分析</string>
+    <string name="view_summary">查看摘要</string>
+    <string name="export_expenses_to_csv">导出支出为 CSV</string>
+    <string name="month">月份</string>
+    <string name="search_note_category_date_or_amount">搜索备注、类别、日期或金额</string>
+    <string name="sort">排序</string>
+    <string name="no_expenses_yet_tap_to_add_your_first_expense">还没有支出。点击 + 添加第一笔支出。</string>
+
+    <string name="manage_your_account_and_app_info">管理你的账户和应用信息</string>
+    <string name="profile_picture">头像</string>
+    <string name="tap_photo_to_upload">点击照片上传</string>
+    <string name="default_profile_name">ET Wallet 用户</string>
+    <string name="default_profile_email">user@email.com</string>
+    <string name="using_et_wallet_since_2025">自 2025 年起使用 ET Wallet</string>
+    <string name="your_stats">你的统计</string>
+    <string name="expenses">支出</string>
+    <string name="this_month">本月</string>
+    <string name="account">账户</string>
+    <string name="edit_profile">编辑资料</string>
+    <string name="change_password">修改密码</string>
+    <string name="reset_profile">重置资料</string>
+    <string name="zero">0</string>
+
+    <string name="set_optional_limits_for_each_category">为每个类别设置可选限制</string>
+    <string name="food_budget">餐饮预算</string>
+    <string name="entertainment_budget">娱乐预算</string>
+    <string name="transport_budget">交通预算</string>
+    <string name="shopping_budget">购物预算</string>
+    <string name="bills_budget">账单预算</string>
+    <string name="other_budget">其他预算</string>
+    <string name="save_category_budgets">保存分类预算</string>
+    <string name="back">返回</string>
+</resources>
