@@ -160,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerViewExpenses.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewExpenses.setAdapter(expenseAdapter);
+        recyclerViewExpenses.setNestedScrollingEnabled(true);
     }
 
     private void setupCategorySpinner() {
@@ -500,7 +501,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showInfoDialog() {
         new AlertDialog.Builder(this)
-                .setTitle("Expense Tracker App")
+                .setTitle("ET Wallet App")
                 .setMessage("Track your daily spending easily.\n\n"
                         + "• Add, edit, and delete expenses\n"
                         + "• Filter, search, and sort expenses\n"

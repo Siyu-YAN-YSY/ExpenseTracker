@@ -19,6 +19,7 @@
     <string name="select_a_month_to_view_remaining_budget">Select a month to view remaining budget</string>
     <string name="no_matching_expenses_found_try_a_different_search">No matching expenses found. Try a different search.</string>
     <string name="wallet_logo">Wallet logo</string>
+    <string name="back_to_home">Back to Home</string>
 
     <string-array name="expense_categories">
         <item>Food</item>

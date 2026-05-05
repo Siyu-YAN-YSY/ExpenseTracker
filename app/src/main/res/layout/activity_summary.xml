@@ -38,6 +38,7 @@
             android:text="Back to Home"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
+            android:backgroundTint="@color/blue_primary"
             app:backgroundTint="#6A4FB3"
             app:cornerRadius="24dp" />
 
