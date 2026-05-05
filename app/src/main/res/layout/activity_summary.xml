@@ -17,7 +17,7 @@
             android:id="@+id/tvSummaryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Summary"
+            android:text="@string/summary"
             android:textColor="#222222"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="Total spending by category"
+            android:text="@string/total_spending_by_category"
             android:textColor="#777777"
             android:textSize="15sp" />
 
@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="Back to Home"
+            android:text="@string/back_to_home"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             app:backgroundTint="@color/blue_primary"
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="26dp"
-            android:text="Grand Total"
+            android:text="@string/grand_total"
             android:textColor="#444444"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -67,7 +67,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="All Categories"
+                    android:text="@string/all_categories"
                     android:textColor="#2E7D32"
                     android:textSize="14sp" />
 
@@ -76,7 +76,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="$0.00"
+                    android:text="@string/_0_00"
                     android:textColor="#1B5E20"
                     android:textSize="32sp"
                     android:textStyle="bold" />
@@ -88,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="26dp"
-            android:text="Category Breakdown"
+            android:text="@string/category_breakdown"
             android:textColor="#444444"
             android:textSize="15sp"
             android:textStyle="bold" />
@@ -117,7 +117,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Food"
+                        android:text="@string/food"
                         android:textColor="#333333"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -126,7 +126,7 @@
                         android:id="@+id/tvFoodTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$0.00"
+                        android:text="@string/_0_00"
                         android:textColor="#222222"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -149,7 +149,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Entertainment"
+                        android:text="@string/entertainment"
                         android:textColor="#333333"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -158,7 +158,7 @@
                         android:id="@+id/tvEntertainmentTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$0.00"
+                        android:text="@string/_0_00"
                         android:textColor="#222222"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -181,7 +181,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Transport"
+                        android:text="@string/transport"
                         android:textColor="#333333"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -190,7 +190,7 @@
                         android:id="@+id/tvTransportTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$0.00"
+                        android:text="@string/_0_00"
                         android:textColor="#222222"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -213,7 +213,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Shopping"
+                        android:text="@string/shopping"
                         android:textColor="#333333"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -222,7 +222,7 @@
                         android:id="@+id/tvShoppingTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$0.00"
+                        android:text="@string/_0_00"
                         android:textColor="#222222"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -245,7 +245,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Bills"
+                        android:text="@string/bills"
                         android:textColor="#333333"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -254,7 +254,7 @@
                         android:id="@+id/tvBillsTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$0.00"
+                        android:text="@string/_0_00"
                         android:textColor="#222222"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -277,7 +277,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Other"
+                        android:text="@string/other"
                         android:textColor="#333333"
                         android:textSize="16sp"
                         android:textStyle="bold" />
@@ -286,7 +286,7 @@
                         android:id="@+id/tvOtherTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$0.00"
+                        android:text="@string/_0_00"
                         android:textColor="#222222"
                         android:textSize="16sp"
                         android:textStyle="bold" />

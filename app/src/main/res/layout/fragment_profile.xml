@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Profile"
+            android:text="@string/profile"
             android:textColor="@color/text_primary"
             android:textSize="28sp"
             android:textStyle="bold" />
@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Manage your account and app info"
+            android:text="@string/manage_your_account_and_app_info"
             android:textColor="@color/text_secondary"
             android:textSize="14sp" />
 
@@ -50,7 +50,7 @@
                     android:layout_width="96dp"
                     android:layout_height="96dp"
                     android:clickable="true"
-                    android:contentDescription="Profile picture"
+                    android:contentDescription="@string/profile_picture"
                     android:focusable="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/logo_wallet"
@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Tap photo to upload"
+                    android:text="@string/tap_photo_to_upload"
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
 
@@ -91,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Using ET Wallet since 2025"
+                    android:text="@string/using_et_wallet_since_2025"
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -101,7 +101,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Your Stats"
+            android:text="@string/your_stats"
             android:textColor="@color/text_primary"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -131,7 +131,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Expenses"
+                        android:text="@string/expenses"
                         android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
 
@@ -170,7 +170,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="This Month"
+                        android:text="@string/this_month"
                         android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
 
@@ -191,7 +191,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Account"
+            android:text="@string/account"
             android:textColor="@color/text_primary"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -216,7 +216,7 @@
                     android:id="@+id/btnEditProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Edit Profile"
+                    android:text="@string/edit_profile"
                     android:textAllCaps="false" />
 
                 <Button
@@ -224,7 +224,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Change Password"
+                    android:text="@string/change_password"
                     android:textAllCaps="false" />
 
                 <Button
@@ -232,7 +232,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Reset Profile"
+                    android:text="@string/reset_profile"
                     android:textAllCaps="false"
                     app:backgroundTint="@color/divider_gray" />
             </LinearLayout>

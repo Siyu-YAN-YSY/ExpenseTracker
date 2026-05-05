@@ -60,7 +60,6 @@
             </androidx.appcompat.widget.Toolbar>
 
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -74,7 +73,7 @@
                     android:id="@+id/tvWelcomeUser"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Welcome back, User"
+                    android:text="@string/welcome_back_user"
                     android:textColor="@color/text_primary"
                     android:textSize="22sp"
                     android:textStyle="bold" />
@@ -83,7 +82,7 @@
                     android:id="@+id/tvSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Track your spending"
+                    android:text="@string/track_your_spending"
                     android:textColor="@color/text_secondary"
                     android:textSize="15sp" />
 
@@ -106,7 +105,7 @@
                             android:id="@+id/tvTotalLabel"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Total Expense"
+                            android:text="@string/total_expense"
                             android:textColor="@color/success"
                             android:textSize="16sp" />
 
@@ -128,7 +127,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Budget: $0.00"
+                    android:text="@string/budget_0_00"
                     android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -137,7 +136,7 @@
                     android:id="@+id/tvRemaining"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Remaining: $0.00"
+                    android:text="@string/remaining_0_00"
                     android:textColor="@color/text_secondary"
                     android:textSize="16sp" />
 
@@ -152,7 +151,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Set Budget"
+                        android:text="@string/set_budget"
                         android:textAllCaps="false" />
 
                     <Button
@@ -161,7 +160,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_weight="1"
-                        android:text="Category Budgets"
+                        android:text="@string/category_budgets"
                         android:textAllCaps="false" />
                 </LinearLayout>
 
@@ -187,7 +186,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    android:text="View Smart Insights"
+                    android:text="@string/view_smart_insights"
                     android:textAllCaps="false" />
 
                 <Button
@@ -195,7 +194,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="View Summary"
+                    android:text="@string/view_summary"
                     android:textAllCaps="false" />
 
                 <Button
@@ -203,7 +202,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Export Expenses to CSV"
+                    android:text="@string/export_expenses_to_csv"
                     android:textAllCaps="false" />
 
                 <TextView
@@ -211,7 +210,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
-                    android:text="Month"
+                    android:text="@string/month"
                     android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -228,7 +227,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Category"
+                    android:text="@string/category"
                     android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -251,14 +250,14 @@
                         android:id="@+id/etSearchExpense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Search note, category, date, or amount" />
+                        android:hint="@string/search_note_category_date_or_amount" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Sort"
+                    android:text="@string/sort"
                     android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -276,7 +275,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     android:gravity="center"
-                    android:text="No expenses yet. Tap + to add your first expense."
+                    android:text="@string/no_expenses_yet_tap_to_add_your_first_expense"
                     android:textColor="@color/text_muted"
                     android:textSize="18sp"
                     android:visibility="gone" />

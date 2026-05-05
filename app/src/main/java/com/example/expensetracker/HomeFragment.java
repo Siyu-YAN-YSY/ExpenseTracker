@@ -420,7 +420,7 @@ public class HomeFragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
         TextView title = new TextView(requireContext());
-        title.setText("Set Monthly Budget");
+        title.setText(R.string.set_monthly_budget);
         title.setTextSize(18f);
         title.setPadding(0, 30, 0, 10);
         title.setGravity(Gravity.CENTER);
@@ -434,7 +434,7 @@ public class HomeFragment extends Fragment {
 
         EditText input = new EditText(requireContext());
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        input.setHint("Enter Amount");
+        input.setHint(R.string.enter_amount);
         input.setGravity(Gravity.CENTER);
         input.setTextSize(16f);
 
@@ -446,7 +446,7 @@ public class HomeFragment extends Fragment {
         layout.addView(input);
         builder.setView(layout);
 
-        builder.setPositiveButton("Save", (dialog, which) -> {
+        builder.setPositiveButton(R.string.save, (dialog, which) -> {
             String value = input.getText().toString().trim();
             if (!value.isEmpty()) {
                 try {
@@ -458,7 +458,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        builder.setNegativeButton("Cancel", null).show();
+        builder.setNegativeButton(R.string.cancel, null).show();
     }
 
     private void startCsvExport() {
@@ -505,7 +505,7 @@ public class HomeFragment extends Fragment {
 
     private void showInfoDialog() {
         new AlertDialog.Builder(requireContext())
-                .setTitle("Expense Tracker App")
+                .setTitle("ET Wallet App")
                 .setMessage("Track your daily spending easily.\n\n"
                         + "• Add, edit, and delete expenses\n"
                         + "• Filter, search, and sort expenses\n"
