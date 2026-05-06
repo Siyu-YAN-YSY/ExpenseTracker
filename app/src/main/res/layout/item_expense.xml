@@ -38,7 +38,7 @@
                 android:background="@android:color/holo_green_light"
                 android:paddingHorizontal="10dp"
                 android:paddingVertical="4dp"
-                android:text="Food"
+                android:text="@string/food"
                 android:textColor="@android:color/white"
                 android:textSize="12sp"
                 android:textStyle="bold" />
@@ -86,7 +86,7 @@
                 android:id="@+id/btnEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Edit"
+                android:text="@string/edit"
                 android:textAllCaps="false" />
 
             <ImageButton
@@ -95,7 +95,7 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="8dp"
                 android:background="@android:color/transparent"
-                android:contentDescription="Delete"
+                android:contentDescription="@string/delete"
                 android:src="@android:drawable/ic_menu_delete" />
         </LinearLayout>
 

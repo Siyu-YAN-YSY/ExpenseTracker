@@ -4,7 +4,7 @@
     android:id="@+id/summary_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F8FA"
+    android:background="@color/screen_background"
     android:fillViewport="true">
 
     <LinearLayout
@@ -17,8 +17,8 @@
             android:id="@+id/tvSummaryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Summary"
-            android:textColor="#222222"
+            android:text="@string/summary"
+            android:textColor="@color/text_primary"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -26,8 +26,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="Total spending by category"
-            android:textColor="#777777"
+            android:text="@string/total_spending_by_category"
+            android:textColor="@color/text_secondary"
             android:textSize="15sp" />
 
         <com.google.android.material.button.MaterialButton
@@ -35,19 +35,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            android:text="Back to Home"
+            android:text="@string/back_to_home"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:backgroundTint="@color/blue_primary"
-            app:backgroundTint="#6A4FB3"
+            app:backgroundTint="@color/blue_primary"
             app:cornerRadius="24dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="26dp"
-            android:text="Grand Total"
-            android:textColor="#444444"
+            android:text="@string/grand_total"
+            android:textColor="@color/text_primary"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -55,9 +54,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:cardBackgroundColor="#E9F7EC"
+            app:cardBackgroundColor="@color/card_green_bg"
             app:cardCornerRadius="20dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:strokeColor="@color/divider_gray"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -68,8 +69,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="All Categories"
-                    android:textColor="#2E7D32"
+                    android:text="@string/all_categories"
+                    android:textColor="@color/success"
                     android:textSize="14sp" />
 
                 <TextView
@@ -77,8 +78,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="$0.00"
-                    android:textColor="#1B5E20"
+                    android:text="@string/_0_00"
+                    android:textColor="@color/success_dark"
                     android:textSize="32sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -89,8 +90,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="26dp"
-            android:text="Category Breakdown"
-            android:textColor="#444444"
+            android:text="@string/category_breakdown"
+            android:textColor="@color/text_primary"
             android:textSize="15sp"
             android:textStyle="bold" />
 
@@ -98,9 +99,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="@color/surface_light"
             app:cardCornerRadius="20dp"
-            app:cardElevation="3dp">
+            app:cardElevation="3dp"
+            app:strokeColor="@color/divider_gray"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -118,8 +121,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Food"
-                        android:textColor="#333333"
+                        android:text="@string/food"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -127,8 +130,8 @@
                         android:id="@+id/tvFoodTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$0.00"
-                        android:textColor="#222222"
+                        android:text="@string/_0_00"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -138,7 +141,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="14dp"
                     android:layout_marginBottom="14dp"
-                    android:background="#EEEEEE" />
+                    android:background="@color/divider_gray" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -150,8 +153,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Entertainment"
-                        android:textColor="#333333"
+                        android:text="@string/entertainment"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -159,8 +162,8 @@
                         android:id="@+id/tvEntertainmentTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$0.00"
-                        android:textColor="#222222"
+                        android:text="@string/_0_00"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -170,7 +173,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="14dp"
                     android:layout_marginBottom="14dp"
-                    android:background="#EEEEEE" />
+                    android:background="@color/divider_gray" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -182,8 +185,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Transport"
-                        android:textColor="#333333"
+                        android:text="@string/transport"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -191,8 +194,8 @@
                         android:id="@+id/tvTransportTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$0.00"
-                        android:textColor="#222222"
+                        android:text="@string/_0_00"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -202,7 +205,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="14dp"
                     android:layout_marginBottom="14dp"
-                    android:background="#EEEEEE" />
+                    android:background="@color/divider_gray" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -214,8 +217,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Shopping"
-                        android:textColor="#333333"
+                        android:text="@string/shopping"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -223,8 +226,8 @@
                         android:id="@+id/tvShoppingTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$0.00"
-                        android:textColor="#222222"
+                        android:text="@string/_0_00"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -234,7 +237,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="14dp"
                     android:layout_marginBottom="14dp"
-                    android:background="#EEEEEE" />
+                    android:background="@color/divider_gray" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -246,8 +249,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Bills"
-                        android:textColor="#333333"
+                        android:text="@string/bills"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -255,8 +258,8 @@
                         android:id="@+id/tvBillsTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$0.00"
-                        android:textColor="#222222"
+                        android:text="@string/_0_00"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -266,7 +269,7 @@
                     android:layout_height="1dp"
                     android:layout_marginTop="14dp"
                     android:layout_marginBottom="14dp"
-                    android:background="#EEEEEE" />
+                    android:background="@color/divider_gray" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -278,8 +281,8 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Other"
-                        android:textColor="#333333"
+                        android:text="@string/other"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
 
@@ -287,8 +290,8 @@
                         android:id="@+id/tvOtherTotal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="$0.00"
-                        android:textColor="#222222"
+                        android:text="@string/_0_00"
+                        android:textColor="@color/text_primary"
                         android:textSize="16sp"
                         android:textStyle="bold" />
                 </LinearLayout>

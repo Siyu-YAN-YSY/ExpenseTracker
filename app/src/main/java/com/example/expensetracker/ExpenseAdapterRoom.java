@@ -45,7 +45,10 @@ public class ExpenseAdapterRoom extends RecyclerView.Adapter<ExpenseAdapterRoom.
     @Override
     public void onBindViewHolder(@NonNull ExpenseViewHolder holder, int position) {
         ExpenseEntity expense = expenseList.get(position);
-        holder.tvItemAmount.setText("$" + expense.getAmount());
+
+        holder.tvItemAmount.setText(
+                CurrencyManager.formatAmountString(holder.itemView.getContext(), expense.getAmount())
+        );
         holder.tvItemCategoryDate.setText(expense.getCategory() + " | " + expense.getDate());
 
         if (expense.getNote() == null || expense.getNote().trim().isEmpty()) {

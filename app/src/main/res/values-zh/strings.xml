@@ -1,0 +1,236 @@
+<resources>
+    <string name="app_name">ET 钱包</string>
+    <string name="settings">设置</string>
+    <string name="language">语言</string>
+    <string name="choose_app_language">选择应用语言</string>
+    <string name="add_expense">添加支出</string>
+    <string name="edit_expense">编辑支出</string>
+    <string name="save_expense">保存支出</string>
+    <string name="update_expense">更新支出</string>
+    <string name="category">类别</string>
+    <string name="amount">金额</string>
+    <string name="date">日期</string>
+    <string name="note">备注</string>
+    <string name="cancel">取消</string>
+    <string name="enter_amount">输入金额</string>
+    <string name="enter_note">输入备注</string>
+    <string name="mm_dd_yyyy">月/日/年</string>
+    <string name="recurring_expense">周期性支出</string>
+    <string name="profile">个人资料</string>
+    <string name="welcome_back">欢迎回来</string>
+    <string name="track_your_spending">记录你的支出</string>
+    <string name="home">首页</string>
+    <string name="set_monthly_budget">设置月度预算</string>
+    <string name="budget_not_set">预算：未设置</string>
+    <string name="set_a_monthly_budget_to_track_spending">设置月度预算以跟踪支出</string>
+    <string name="select_a_month_to_view_remaining_budget">选择月份以查看剩余预算</string>
+    <string name="no_matching_expenses_found_try_a_different_search">未找到匹配的支出，请尝试其他搜索。</string>
+    <string name="wallet_logo">钱包标志</string>
+    <string name="back_to_home">返回首页</string>
+    <string name="analyzing_this_month">正在分析本月</string>
+    <string name="spending_health_score">消费健康评分</string>
+    <string name="_100_100">100/100</string>
+    <string name="_0_00">$0.00</string>
+    <string name="add_expense_1">添加支出</string>
+    <string name="good_morning">早上好</string>
+    <string name="good_afternoon">下午好</string>
+    <string name="good_evening">晚上好</string>
+    <string name="customize_your_expense_tracker">自定义你的记账工具</string>
+    <string name="budget">预算</string>
+    <string name="monthly_budget">月度预算</string>
+    <string name="set_your_monthly_limit">设置每月限额</string>
+    <string name="currency">货币</string>
+    <string name="choose_your_preferred_currency">选择你偏好的货币</string>
+    <string name="appearance">外观</string>
+    <string name="dark_mode">深色模式</string>
+    <string name="enable_dark_theme">启用深色主题</string>
+    <string name="notifications">通知</string>
+    <string name="budget_alerts">预算提醒</string>
+    <string name="warn_when_spending_is_too_high">当支出过高时提醒</string>
+    <string name="monthly_reminder">每月提醒</string>
+    <string name="get_monthly_summary_reminders">获取每月总结提醒</string>
+    <string name="data">数据</string>
+    <string name="export_data">导出数据</string>
+    <string name="clear_all_expenses">清除所有支出</string>
+    <string name="about">关于</string>
+    <string name="app_version_1_0">应用版本 1.0</string>
+    <string name="expense_tracker_by_et_wallet">ET 钱包出品的记账应用</string>
+    <string name="total_expense">总支出</string>
+    <string name="amount_zero">$0.00</string>
+    <string name="amount_zero_plain">0.00</string>
+    <string name="set_budget">设置预算</string>
+    <string name="category_budgets">分类预算</string>
+    <string name="view_smart_insights">查看智能洞察</string>
+    <string name="view_summary">查看总结</string>
+    <string name="export_expenses_to_csv">导出支出为 CSV</string>
+    <string name="month">月份</string>
+    <string name="search_note_category_date_or_amount">搜索备注、类别、日期或金额</string>
+    <string name="sort">排序</string>
+    <string name="no_expenses_yet_tap_to_add_your_first_expense">暂无支出，点击 + 添加第一笔支出。</string>
+
+    <string name="manage_your_account_and_app_info">管理你的账户和应用信息</string>
+    <string name="profile_picture">头像</string>
+    <string name="tap_photo_to_upload">点击上传照片</string>
+    <string name="default_profile_name">ET 钱包用户</string>
+    <string name="default_profile_email">user@email.com</string>
+    <string name="using_et_wallet_since_2025">自 2025 年开始使用 ET 钱包</string>
+    <string name="your_stats">你的统计</string>
+    <string name="expenses">支出</string>
+    <string name="this_month">本月</string>
+    <string name="account">账户</string>
+    <string name="edit_profile">编辑资料</string>
+    <string name="change_password">修改密码</string>
+    <string name="reset_profile">重置资料</string>
+    <string name="zero">0</string>
+
+    <string name="set_optional_limits_for_each_category">为每个类别设置可选限额</string>
+    <string name="food_budget">餐饮预算</string>
+    <string name="entertainment_budget">娱乐预算</string>
+    <string name="transport_budget">交通预算</string>
+    <string name="shopping_budget">购物预算</string>
+    <string name="bills_budget">账单预算</string>
+    <string name="other_budget">其他预算</string>
+    <string name="save_category_budgets">保存分类预算</string>
+    <string name="back">返回</string>
+
+    <string name="category_budgets_saved">分类预算已保存</string>
+    <string name="cannot_be_negative">不能为负数</string>
+    <string name="enter_a_valid_amount">请输入有效金额</string>
+
+    <string name="smart_insights">智能洞察</string>
+    <string name="good">良好</string>
+    <string name="selected_month">所选月份</string>
+    <string name="previous_month">上个月</string>
+    <string name="month_to_month_change">环比变化</string>
+    <string name="_0_00_compared_to_last_month">与上个月相比为 $0.00</string>
+    <string name="monthly_budget_is_not_set_yet">尚未设置月度预算。</string>
+    <string name="category_comparison">类别对比</string>
+    <string name="quick_stats">快速统计</string>
+    <string name="top_category">最高类别</string>
+    <string name="no_category_data_yet">暂无类别数据。</string>
+    <string name="highest_expense">最高支出</string>
+    <string name="no_expenses_recorded_for_this_month">本月暂无支出记录。</string>
+    <string name="average_spending">平均支出</string>
+    <string name="_0_00_per_day">每天 $0.00</string>
+    <string name="projection">预测</string>
+    <string name="_0_00_projected_for_the_month">预计本月为 $0.00</string>
+    <string name="smart_recommendations">智能建议</string>
+    <string name="add_expenses_for_this_month_to_unlock_personalized_insights">添加本月支出以解锁个性化洞察。</string>
+
+
+    <string name="welcome_back_user">欢迎回来，用户</string>
+    <string name="budget_0_00">预算：$0.00</string>
+    <string name="remaining_0_00">剩余：$0.00</string>
+    <string name="choose_language">选择语言</string>
+    <string name="chinese">中文</string>
+    <string name="english">英文</string>
+    <string name="monthly_budget_s">月度预算：%s</string>
+    <string name="invalid_budget">无效预算</string>
+    <string name="choose_currency">选择货币</string>
+    <string name="language_s">语言：%s</string>
+    <string name="are_you_sure_you_want_to_delete_all_expense_data_this_cannot_be_undone">确定要删除所有支出数据吗？此操作无法撤销。</string>
+    <string name="delete">删除</string>
+    <string name="all_expenses_deleted">所有支出已删除</string>
+
+
+    <string name="summary">总结</string>
+    <string name="total_spending_by_category">按类别的总支出</string>
+    <string name="grand_total">总计</string>
+    <string name="all_categories">所有类别</string>
+    <string name="category_breakdown">类别明细</string>
+    <string name="food">餐饮</string>
+    <string name="entertainment">娱乐</string>
+    <string name="transport">交通</string>
+    <string name="shopping">购物</string>
+    <string name="bills">账单</string>
+    <string name="other">其他</string>
+    <string name="save">保存</string>
+
+
+    <string name="security">安全</string>
+    <string name="passcode">密码</string>
+    <string name="passcode_on">密码：已开启</string>
+    <string name="passcode_off">密码：已关闭</string>
+    <string name="set_or_change_your_app_passcode">设置或更改应用密码</string>
+    <string name="enable_passcode">启用密码</string>
+    <string name="lock_the_app_with_a_4_digit_code">使用 4 位数字密码锁定应用</string>
+    <string name="set_passcode">设置密码</string>
+    <string name="change_passcode">更改密码</string>
+    <string name="enter_4_digit_passcode">输入 4 位密码</string>
+    <string name="passcode_must_be_4_digits">密码必须为 4 位数字</string>
+    <string name="passcode_saved">密码已保存</string>
+    <string name="passcode_removed">密码已移除</string>
+    <string name="enter_passcode">输入密码</string>
+    <string name="unlock">解锁</string>
+    <string name="incorrect_passcode">密码错误</string>
+    <string name="clear">清除</string>
+
+
+    <string name="update_your_app_password">更新应用密码</string>
+    <string name="current_password">当前密码</string>
+    <string name="new_password">新密码</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="current_password_incorrect">当前密码错误</string>
+    <string name="password_must_be_at_least_4_characters">密码至少需要 4 个字符</string>
+    <string name="passwords_do_not_match">两次输入的密码不一致</string>
+    <string name="password_updated">密码已更新</string>
+
+
+    <string name="lock_screen">锁定屏幕</string>
+    <string name="enable_passcode_first">请先在设置中启用密码</string>
+
+    <string name="enter_current_passcode">输入当前密码</string>
+    <string name="turn_off_passcode">关闭密码</string>
+    <string name="confirm">确认</string>
+    <string name="edit">编辑</string>
+    <string name="all">全部</string>
+    <string name="newest_first">最新优先</string>
+    <string name="oldest_first">最旧优先</string>
+    <string name="highest_amount">金额从高到低</string>
+    <string name="lowest_amount">金额从低到高</string>
+    <string name="category_a_z">类别 A-Z</string>
+
+    <string name="weekly">每周</string>
+    <string name="monthly">每月</string>
+    <string name="yearly">每年</string>
+
+
+    <string-array name="expense_categories">
+        <item>Food</item>
+        <item>Entertainment</item>
+        <item>Transport</item>
+        <item>Shopping</item>
+        <item>Bills</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="expense_categories_display">
+        <item>餐饮</item>
+        <item>娱乐</item>
+        <item>交通</item>
+        <item>购物</item>
+        <item>账单</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="filter_categories">
+        <item>All</item>
+        <item>Food</item>
+        <item>Entertainment</item>
+        <item>Transport</item>
+        <item>Shopping</item>
+        <item>Bills</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="filter_categories_display">
+        <item>全部</item>
+        <item>餐饮</item>
+        <item>娱乐</item>
+        <item>交通</item>
+        <item>购物</item>
+        <item>账单</item>
+        <item>其他</item>
+    </string-array>
+
+</resources>

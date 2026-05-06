@@ -4,7 +4,7 @@
     android:id="@+id/insights_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F8FA"
+    android:background="@color/screen_background"
     android:fillViewport="true">
 
     <LinearLayout
@@ -16,8 +16,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Smart Insights"
-            android:textColor="#222222"
+            android:text="@string/smart_insights"
+            android:textColor="@color/text_primary"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -26,8 +26,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="Analyzing this month"
-            android:textColor="#777777"
+            android:text="@string/analyzing_this_month"
+            android:textColor="@color/text_secondary"
             android:textSize="15sp" />
 
         <com.google.android.material.button.MaterialButton
@@ -38,17 +38,18 @@
             android:text="@string/back_to_home"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:backgroundTint="@color/blue_primary"
-            app:backgroundTint="#6A4FB3"
+            app:backgroundTint="@color/blue_primary"
             app:cornerRadius="24dp" />
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
-            app:cardBackgroundColor="#E8F5E9"
+            app:cardBackgroundColor="@color/card_green_bg"
             app:cardCornerRadius="20dp"
-            app:cardElevation="5dp">
+            app:cardElevation="5dp"
+            app:strokeColor="@color/divider_gray"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -59,8 +60,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Spending Health Score"
-                    android:textColor="#2E7D32"
+                    android:text="@string/spending_health_score"
+                    android:textColor="@color/success"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -69,8 +70,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="100/100"
-                    android:textColor="#1B5E20"
+                    android:text="@string/_100_100"
+                    android:textColor="@color/success_dark"
                     android:textSize="38sp"
                     android:textStyle="bold" />
 
@@ -78,8 +79,8 @@
                     android:id="@+id/tvHealthMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Good"
-                    android:textColor="#2E7D32"
+                    android:text="@string/good"
+                    android:textColor="@color/success"
                     android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -95,9 +96,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:cardBackgroundColor="@android:color/white"
+                app:cardBackgroundColor="@color/surface_light"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardElevation="4dp"
+                app:strokeColor="@color/divider_gray"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -108,8 +111,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Selected Month"
-                        android:textColor="#777777"
+                        android:text="@string/selected_month"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
 
                     <TextView
@@ -117,8 +120,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
-                        android:text="$0.00"
-                        android:textColor="#222222"
+                        android:text="@string/_0_00"
+                        android:textColor="@color/text_primary"
                         android:textSize="24sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -129,9 +132,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
-                app:cardBackgroundColor="@android:color/white"
+                app:cardBackgroundColor="@color/surface_light"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp">
+                app:cardElevation="4dp"
+                app:strokeColor="@color/divider_gray"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -142,8 +147,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Previous Month"
-                        android:textColor="#777777"
+                        android:text="@string/previous_month"
+                        android:textColor="@color/text_secondary"
                         android:textSize="13sp" />
 
                     <TextView
@@ -152,7 +157,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="6dp"
                         android:text="$0.00"
-                        android:textColor="#222222"
+                        android:textColor="@color/text_primary"
                         android:textSize="24sp"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -163,9 +168,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="@color/surface_light"
             app:cardCornerRadius="18dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:strokeColor="@color/divider_gray"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -176,8 +183,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Month-to-Month Change"
-                    android:textColor="#222222"
+                    android:text="@string/month_to_month_change"
+                    android:textColor="@color/text_primary"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
@@ -186,8 +193,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="$0.00 compared to last month"
-                    android:textColor="#2E7D32"
+                    android:text="@string/_0_00_compared_to_last_month"
+                    android:textColor="@color/success"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -196,8 +203,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="Monthly budget is not set yet."
-                    android:textColor="#555555"
+                    android:text="@string/monthly_budget_is_not_set_yet"
+                    android:textColor="@color/text_secondary"
                     android:textSize="15sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -206,9 +213,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="@color/surface_light"
             app:cardCornerRadius="18dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:strokeColor="@color/divider_gray"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -219,8 +228,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Category Comparison"
-                    android:textColor="#222222"
+                    android:text="@string/category_comparison"
+                    android:textColor="@color/text_primary"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
@@ -236,9 +245,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="@color/surface_light"
             app:cardCornerRadius="18dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:strokeColor="@color/divider_gray"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -249,8 +260,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Quick Stats"
-                    android:textColor="#222222"
+                    android:text="@string/quick_stats"
+                    android:textColor="@color/text_primary"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
@@ -258,16 +269,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="Top category"
-                    android:textColor="#777777"
+                    android:text="@string/top_category"
+                    android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tvTopCategory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="No category data yet."
-                    android:textColor="#222222"
+                    android:text="@string/no_category_data_yet"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -275,16 +286,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="Highest expense"
-                    android:textColor="#777777"
+                    android:text="@string/highest_expense"
+                    android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tvHighestExpense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="No expenses recorded for this month."
-                    android:textColor="#222222"
+                    android:text="@string/no_expenses_recorded_for_this_month"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -292,16 +303,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="Average spending"
-                    android:textColor="#777777"
+                    android:text="@string/average_spending"
+                    android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tvDailyAverage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="$0.00 per day"
-                    android:textColor="#222222"
+                    android:text="@string/_0_00_per_day"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -309,16 +320,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:text="Projection"
-                    android:textColor="#777777"
+                    android:text="@string/projection"
+                    android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
 
                 <TextView
                     android:id="@+id/tvProjectedSpending"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="$0.00 projected for the month"
-                    android:textColor="#222222"
+                    android:text="@string/_0_00_projected_for_the_month"
+                    android:textColor="@color/text_primary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -329,9 +340,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
             android:layout_marginBottom="24dp"
-            app:cardBackgroundColor="@android:color/white"
+            app:cardBackgroundColor="@color/surface_light"
             app:cardCornerRadius="18dp"
-            app:cardElevation="4dp">
+            app:cardElevation="4dp"
+            app:strokeColor="@color/divider_gray"
+            app:strokeWidth="1dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -342,8 +355,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Smart Recommendations"
-                    android:textColor="#222222"
+                    android:text="@string/smart_recommendations"
+                    android:textColor="@color/text_primary"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
@@ -353,8 +366,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:lineSpacingExtra="4dp"
-                    android:text="Add expenses for this month to unlock personalized insights."
-                    android:textColor="#444444"
+                    android:text="@string/add_expenses_for_this_month_to_unlock_personalized_insights"
+                    android:textColor="@color/text_secondary"
                     android:textSize="15sp" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

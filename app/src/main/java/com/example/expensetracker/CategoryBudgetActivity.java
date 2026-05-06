@@ -1,5 +1,6 @@
 package com.example.expensetracker;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -11,12 +12,18 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Locale;
 
 public class CategoryBudgetActivity extends AppCompatActivity {
 
-    private final String[] categories = {"Food", "Entertainment", "Transport", "Shopping", "Bills", "Other"};
+    private TextInputLayout tilFoodBudget;
+    private TextInputLayout tilEntertainmentBudget;
+    private TextInputLayout tilTransportBudget;
+    private TextInputLayout tilShoppingBudget;
+    private TextInputLayout tilBillsBudget;
+    private TextInputLayout tilOtherBudget;
 
     private TextInputEditText etFoodBudget;
     private TextInputEditText etEntertainmentBudget;
@@ -24,6 +31,11 @@ public class CategoryBudgetActivity extends AppCompatActivity {
     private TextInputEditText etShoppingBudget;
     private TextInputEditText etBillsBudget;
     private TextInputEditText etOtherBudget;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(LocaleManager.applyLanguage(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +49,7 @@ public class CategoryBudgetActivity extends AppCompatActivity {
         });
 
         initializeViews();
+        applyCurrencyHints();
         loadBudgets();
 
         MaterialButton btnSaveCategoryBudgets = findViewById(R.id.btnSaveCategoryBudgets);
@@ -47,6 +60,13 @@ public class CategoryBudgetActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
+        tilFoodBudget = findViewById(R.id.tilFoodBudget);
+        tilEntertainmentBudget = findViewById(R.id.tilEntertainmentBudget);
+        tilTransportBudget = findViewById(R.id.tilTransportBudget);
+        tilShoppingBudget = findViewById(R.id.tilShoppingBudget);
+        tilBillsBudget = findViewById(R.id.tilBillsBudget);
+        tilOtherBudget = findViewById(R.id.tilOtherBudget);
+
         etFoodBudget = findViewById(R.id.etFoodBudget);
         etEntertainmentBudget = findViewById(R.id.etEntertainmentBudget);
         etTransportBudget = findViewById(R.id.etTransportBudget);
@@ -55,8 +75,20 @@ public class CategoryBudgetActivity extends AppCompatActivity {
         etOtherBudget = findViewById(R.id.etOtherBudget);
     }
 
+    private void applyCurrencyHints() {
+        String symbol = CurrencyManager.getCurrencySymbol(this);
+
+        tilFoodBudget.setPrefixText(symbol);
+        tilEntertainmentBudget.setPrefixText(symbol);
+        tilTransportBudget.setPrefixText(symbol);
+        tilShoppingBudget.setPrefixText(symbol);
+        tilBillsBudget.setPrefixText(symbol);
+        tilOtherBudget.setPrefixText(symbol);
+    }
+
     private void loadBudgets() {
         SharedPreferences prefs = getSharedPreferences("category_budgets", MODE_PRIVATE);
+
         setBudgetText(etFoodBudget, prefs.getFloat("budget_Food", 0f));
         setBudgetText(etEntertainmentBudget, prefs.getFloat("budget_Entertainment", 0f));
         setBudgetText(etTransportBudget, prefs.getFloat("budget_Transport", 0f));
@@ -74,12 +106,12 @@ public class CategoryBudgetActivity extends AppCompatActivity {
     }
 
     private void saveBudgets() {
-        Float food = readBudget(etFoodBudget, "Food");
-        Float entertainment = readBudget(etEntertainmentBudget, "Entertainment");
-        Float transport = readBudget(etTransportBudget, "Transport");
-        Float shopping = readBudget(etShoppingBudget, "Shopping");
-        Float bills = readBudget(etBillsBudget, "Bills");
-        Float other = readBudget(etOtherBudget, "Other");
+        Float food = readBudget(etFoodBudget, tilFoodBudget, getString(R.string.food_budget));
+        Float entertainment = readBudget(etEntertainmentBudget, tilEntertainmentBudget, getString(R.string.entertainment_budget));
+        Float transport = readBudget(etTransportBudget, tilTransportBudget, getString(R.string.transport_budget));
+        Float shopping = readBudget(etShoppingBudget, tilShoppingBudget, getString(R.string.shopping_budget));
+        Float bills = readBudget(etBillsBudget, tilBillsBudget, getString(R.string.bills_budget));
+        Float other = readBudget(etOtherBudget, tilOtherBudget, getString(R.string.other_budget));
 
         if (food == null || entertainment == null || transport == null
                 || shopping == null || bills == null || other == null) {
@@ -96,25 +128,30 @@ public class CategoryBudgetActivity extends AppCompatActivity {
                 .putFloat("budget_Other", other)
                 .apply();
 
-        Toast.makeText(this, "Category budgets saved", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.category_budgets_saved), Toast.LENGTH_SHORT).show();
         finish();
     }
 
-    private Float readBudget(TextInputEditText editText, String label) {
+    private Float readBudget(TextInputEditText editText, TextInputLayout inputLayout, String label) {
         String value = editText.getText() == null ? "" : editText.getText().toString().trim();
+
         if (value.isEmpty()) {
+            inputLayout.setError(null);
             return 0f;
         }
+
         try {
             float amount = Float.parseFloat(value);
+
             if (amount < 0) {
-                editText.setError(label + " budget cannot be negative");
+                inputLayout.setError(label + " " + getString(R.string.cannot_be_negative));
                 return null;
             }
-            editText.setError(null);
+
+            inputLayout.setError(null);
             return amount;
         } catch (NumberFormatException e) {
-            editText.setError("Enter a valid amount");
+            inputLayout.setError(getString(R.string.enter_a_valid_amount));
             return null;
         }
     }

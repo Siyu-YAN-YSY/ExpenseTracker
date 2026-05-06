@@ -9,4 +9,31 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>
     </style>
+    <style name="CircleImage">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="PasscodeKeyButton">
+        <item name="android:layout_width">84dp</item>
+        <item name="android:layout_height">84dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:background">@drawable/bg_passcode_key_white</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">28sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="PasscodeKeyButtonSecondary">
+        <item name="android:layout_width">84dp</item>
+        <item name="android:layout_height">84dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:background">@drawable/bg_passcode_key_white</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
 </resources>

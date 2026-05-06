@@ -58,4 +58,8 @@ public class ExpenseRepository {
     public void deleteExpense(ExpenseEntity expense) {
         expenseDao.deleteExpense(expense);
     }
+
+    public void deleteAllExpenses() {
+        expenseDao.deleteAllExpenses();
+    }
 }

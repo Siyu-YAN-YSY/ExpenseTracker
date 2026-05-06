@@ -1,18 +1,25 @@
 <resources>
-    <string name="app_name">ExpenseTracker</string>
-    <string name="amount">Amount</string>
+    <string name="app_name">ET Wallet</string>
+    <string name="settings">Settings</string>
+    <string name="language">Language</string>
+    <string name="choose_app_language">Choose app language</string>
     <string name="add_expense">Add Expense</string>
-    <string name="enter_amount">Enter amount</string>
-    <string name="category">Category</string>
-    <string name="date">Date</string>
-    <string name="mm_dd_yyyy">MM/DD/YYYY</string>
-    <string name="note">Note</string>
-    <string name="enter_note">Enter note</string>
-    <string name="recurring_expense">Recurring expense</string>
-    <string name="save_expense">Save Expense</string>
-    <string name="cancel">Cancel</string>
     <string name="edit_expense">Edit Expense</string>
+    <string name="save_expense">Save Expense</string>
     <string name="update_expense">Update Expense</string>
+    <string name="category">Category</string>
+    <string name="amount">Amount</string>
+    <string name="date">Date</string>
+    <string name="note">Note</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_amount">Enter amount</string>
+    <string name="enter_note">Enter note</string>
+    <string name="mm_dd_yyyy">MM/DD/YYYY</string>
+    <string name="recurring_expense">Recurring Expense</string>
+    <string name="profile">Profile</string>
+    <string name="welcome_back">Welcome back</string>
+    <string name="track_your_spending">Track your spending</string>
+    <string name="home">Home</string>
     <string name="set_monthly_budget">Set Monthly Budget</string>
     <string name="budget_not_set">Budget: Not Set</string>
     <string name="set_a_monthly_budget_to_track_spending">Set a monthly budget to track spending</string>
@@ -20,8 +27,185 @@
     <string name="no_matching_expenses_found_try_a_different_search">No matching expenses found. Try a different search.</string>
     <string name="wallet_logo">Wallet logo</string>
     <string name="back_to_home">Back to Home</string>
+    <string name="analyzing_this_month">Analyzing this month</string>
+    <string name="spending_health_score">Spending Health Score</string>
+    <string name="_100_100">100/100</string>
+    <string name="_0_00">$0.00</string>
+    <string name="add_expense_1">Add Expense</string>
+    <string name="good_morning">Good morning</string>
+    <string name="good_afternoon">Good afternoon</string>
+    <string name="good_evening">Good evening</string>
+    <string name="customize_your_expense_tracker">Customize your expense tracker</string>
+    <string name="budget">Budget</string>
+    <string name="monthly_budget">Monthly Budget</string>
+    <string name="set_your_monthly_limit">Set your monthly limit</string>
+    <string name="currency">Currency</string>
+    <string name="choose_your_preferred_currency">Choose your preferred currency</string>
+    <string name="appearance">Appearance</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="enable_dark_theme">Enable dark theme</string>
+    <string name="notifications">Notifications</string>
+    <string name="budget_alerts">Budget Alerts</string>
+    <string name="warn_when_spending_is_too_high">Warn when spending is too high</string>
+    <string name="monthly_reminder">Monthly Reminder</string>
+    <string name="get_monthly_summary_reminders">Get monthly summary reminders</string>
+    <string name="data">Data</string>
+    <string name="export_data">Export Data</string>
+    <string name="clear_all_expenses">Clear All Expenses</string>
+    <string name="about">About</string>
+    <string name="app_version_1_0">App Version 1.0</string>
+    <string name="expense_tracker_by_et_wallet">Expense Tracker by ET Wallet</string>
+    <string name="total_expense">Total Expense</string>
+    <string name="amount_zero">$0.00</string>
+    <string name="amount_zero_plain">0.00</string>
+    <string name="set_budget">Set Budget</string>
+    <string name="category_budgets">Category Budgets</string>
+    <string name="view_smart_insights">View Smart Insights</string>
+    <string name="view_summary">View Summary</string>
+    <string name="export_expenses_to_csv">Export Expenses to CSV</string>
+    <string name="month">Month</string>
+    <string name="search_note_category_date_or_amount">Search note, category, date, or amount</string>
+    <string name="sort">Sort</string>
+    <string name="no_expenses_yet_tap_to_add_your_first_expense">No expenses yet. Tap + to add your first expense.</string>
+
+
+    <string name="manage_your_account_and_app_info">Manage your account and app info</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="tap_photo_to_upload">Tap photo to upload</string>
+    <string name="default_profile_name">ET Wallet User</string>
+    <string name="default_profile_email">user@email.com</string>
+    <string name="using_et_wallet_since_2025">Using ET Wallet since 2025</string>
+    <string name="your_stats">Your Stats</string>
+    <string name="expenses">Expenses</string>
+    <string name="this_month">This Month</string>
+    <string name="account">Account</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="change_password">Change Password</string>
+    <string name="reset_profile">Reset Profile</string>
+    <string name="zero">0</string>
+
+    <string name="set_optional_limits_for_each_category">Set optional limits for each category</string>
+    <string name="food_budget">Food Budget</string>
+    <string name="entertainment_budget">Entertainment Budget</string>
+    <string name="transport_budget">Transport Budget</string>
+    <string name="shopping_budget">Shopping Budget</string>
+    <string name="bills_budget">Bills Budget</string>
+    <string name="other_budget">Other Budget</string>
+    <string name="save_category_budgets">Save Category Budgets</string>
+    <string name="back">Back</string>
+
+    <string name="category_budgets_saved">Category budgets saved</string>
+    <string name="cannot_be_negative">cannot be negative</string>
+    <string name="enter_a_valid_amount">Enter a valid amount</string>
+
+
+    <string name="smart_insights">Smart Insights</string>
+    <string name="good">Good</string>
+    <string name="selected_month">Selected Month</string>
+    <string name="previous_month">Previous Month</string>
+    <string name="month_to_month_change">Month-to-Month Change</string>
+    <string name="_0_00_compared_to_last_month">$0.00 compared to last month</string>
+    <string name="monthly_budget_is_not_set_yet">Monthly budget is not set yet.</string>
+    <string name="category_comparison">Category Comparison</string>
+    <string name="quick_stats">Quick Stats</string>
+    <string name="top_category">Top category</string>
+    <string name="no_category_data_yet">No category data yet.</string>
+    <string name="highest_expense">Highest expense</string>
+    <string name="no_expenses_recorded_for_this_month">No expenses recorded for this month.</string>
+    <string name="average_spending">Average spending</string>
+    <string name="_0_00_per_day">$0.00 per day</string>
+    <string name="projection">Projection</string>
+    <string name="_0_00_projected_for_the_month">$0.00 projected for the month</string>
+    <string name="smart_recommendations">Smart Recommendations</string>
+    <string name="add_expenses_for_this_month_to_unlock_personalized_insights">Add expenses for this month to unlock personalized insights.</string>
+
+
+    <string name="welcome_back_user">Welcome back, User</string>
+    <string name="budget_0_00">Budget: $0.00</string>
+    <string name="remaining_0_00">Remaining: $0.00</string>
+    <string name="choose_language">Choose Language</string>
+    <string name="chinese">Chinese</string>
+    <string name="english">English</string>
+    <string name="monthly_budget_s">Monthly Budget: %s</string>
+    <string name="invalid_budget">Invalid budget</string>
+    <string name="choose_currency">Choose Currency</string>
+    <string name="language_s">Language: %s</string>
+    <string name="are_you_sure_you_want_to_delete_all_expense_data_this_cannot_be_undone">Are you sure you want to delete all expense data? This cannot be undone.</string>
+    <string name="delete">Delete</string>
+    <string name="all_expenses_deleted">All expenses deleted</string>
+
+
+    <string name="summary">Summary</string>
+    <string name="total_spending_by_category">Total spending by category</string>
+    <string name="grand_total">Grand Total</string>
+    <string name="all_categories">All Categories</string>
+    <string name="category_breakdown">Category Breakdown</string>
+    <string name="food">Food</string>
+    <string name="entertainment">Entertainment</string>
+    <string name="transport">Transport</string>
+    <string name="shopping">Shopping</string>
+    <string name="bills">Bills</string>
+    <string name="other">Other</string>
+    <string name="save">Save</string>
+
+
+    <string name="security">Security</string>
+    <string name="passcode">Passcode</string>
+    <string name="passcode_on">Passcode: On</string>
+    <string name="passcode_off">Passcode: Off</string>
+    <string name="set_or_change_your_app_passcode">Set or change your app passcode</string>
+    <string name="enable_passcode">Enable Passcode</string>
+    <string name="lock_the_app_with_a_4_digit_code">Lock the app with a 4-digit code</string>
+    <string name="set_passcode">Set Passcode</string>
+    <string name="change_passcode">Change Passcode</string>
+    <string name="enter_4_digit_passcode">Enter 4-digit passcode</string>
+    <string name="passcode_must_be_4_digits">Passcode must be 4 digits</string>
+    <string name="passcode_saved">Passcode saved</string>
+    <string name="passcode_removed">Passcode removed</string>
+    <string name="enter_passcode">Enter Passcode</string>
+    <string name="unlock">Unlock</string>
+    <string name="incorrect_passcode">Incorrect passcode</string>
+    <string name="clear">Clear</string>
+
+
+    <string name="update_your_app_password">Update your app password</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="current_password_incorrect">Current password is incorrect</string>
+    <string name="password_must_be_at_least_4_characters">Password must be at least 4 characters</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="password_updated">Password updated</string>
+
+    <string name="lock_screen">Lock Screen</string>
+    <string name="enable_passcode_first">Enable passcode first in Settings</string>
+
+    <string name="enter_current_passcode">Enter current passcode</string>
+    <string name="turn_off_passcode">Turn Off Passcode</string>
+    <string name="confirm">Confirm</string>
+    <string name="edit">Edit</string>
+    <string name="all">All</string>
+    <string name="newest_first">Newest First</string>
+    <string name="oldest_first">Oldest First</string>
+    <string name="highest_amount">Highest Amount</string>
+    <string name="lowest_amount">Lowest Amount</string>
+    <string name="category_a_z">Category A-Z</string>
+
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="yearly">Yearly</string>
+
 
     <string-array name="expense_categories">
+        <item>Food</item>
+        <item>Entertainment</item>
+        <item>Transport</item>
+        <item>Shopping</item>
+        <item>Bills</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="expense_categories_display">
         <item>Food</item>
         <item>Entertainment</item>
         <item>Transport</item>
@@ -39,4 +223,17 @@
         <item>Bills</item>
         <item>Other</item>
     </string-array>
+
+    <string-array name="filter_categories_display">
+        <item>All</item>
+        <item>Food</item>
+        <item>Entertainment</item>
+        <item>Transport</item>
+        <item>Shopping</item>
+        <item>Bills</item>
+        <item>Other</item>
+    </string-array>
+
+
+
 </resources>
