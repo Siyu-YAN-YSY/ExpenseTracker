@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES" />
 
     <application
+        android:name=".MyApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -18,7 +19,8 @@
         <activity android:name=".InsightsActivity" />
         <activity android:name=".AddExpenseActivity" />
         <activity android:name=".SummaryActivity" />
-        <activity android:name=".SettingsFragment" />
+        <activity android:name=".PasscodeActivity" />
+
 
         <activity
             android:name=".MainActivity"

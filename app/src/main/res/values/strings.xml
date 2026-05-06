@@ -149,7 +149,63 @@
     <string name="save">Save</string>
 
 
+    <string name="security">Security</string>
+    <string name="passcode">Passcode</string>
+    <string name="passcode_on">Passcode: On</string>
+    <string name="passcode_off">Passcode: Off</string>
+    <string name="set_or_change_your_app_passcode">Set or change your app passcode</string>
+    <string name="enable_passcode">Enable Passcode</string>
+    <string name="lock_the_app_with_a_4_digit_code">Lock the app with a 4-digit code</string>
+    <string name="set_passcode">Set Passcode</string>
+    <string name="change_passcode">Change Passcode</string>
+    <string name="enter_4_digit_passcode">Enter 4-digit passcode</string>
+    <string name="passcode_must_be_4_digits">Passcode must be 4 digits</string>
+    <string name="passcode_saved">Passcode saved</string>
+    <string name="passcode_removed">Passcode removed</string>
+    <string name="enter_passcode">Enter Passcode</string>
+    <string name="unlock">Unlock</string>
+    <string name="incorrect_passcode">Incorrect passcode</string>
+    <string name="clear">Clear</string>
+
+
+    <string name="update_your_app_password">Update your app password</string>
+    <string name="current_password">Current Password</string>
+    <string name="new_password">New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="current_password_incorrect">Current password is incorrect</string>
+    <string name="password_must_be_at_least_4_characters">Password must be at least 4 characters</string>
+    <string name="passwords_do_not_match">Passwords do not match</string>
+    <string name="password_updated">Password updated</string>
+
+    <string name="lock_screen">Lock Screen</string>
+    <string name="enable_passcode_first">Enable passcode first in Settings</string>
+
+    <string name="enter_current_passcode">Enter current passcode</string>
+    <string name="turn_off_passcode">Turn Off Passcode</string>
+    <string name="confirm">Confirm</string>
+    <string name="edit">Edit</string>
+    <string name="all">All</string>
+    <string name="newest_first">Newest First</string>
+    <string name="oldest_first">Oldest First</string>
+    <string name="highest_amount">Highest Amount</string>
+    <string name="lowest_amount">Lowest Amount</string>
+    <string name="category_a_z">Category A-Z</string>
+
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="yearly">Yearly</string>
+
+
     <string-array name="expense_categories">
+        <item>Food</item>
+        <item>Entertainment</item>
+        <item>Transport</item>
+        <item>Shopping</item>
+        <item>Bills</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="expense_categories_display">
         <item>Food</item>
         <item>Entertainment</item>
         <item>Transport</item>
@@ -167,5 +223,17 @@
         <item>Bills</item>
         <item>Other</item>
     </string-array>
+
+    <string-array name="filter_categories_display">
+        <item>All</item>
+        <item>Food</item>
+        <item>Entertainment</item>
+        <item>Transport</item>
+        <item>Shopping</item>
+        <item>Bills</item>
+        <item>Other</item>
+    </string-array>
+
+
 
 </resources>

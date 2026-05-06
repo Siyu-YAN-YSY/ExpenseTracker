@@ -81,8 +81,7 @@ public class ProfileFragment extends Fragment {
         imgProfile.setOnClickListener(v -> openImagePicker());
         view.findViewById(R.id.btnEditProfile).setOnClickListener(v -> showEditProfileDialog());
 
-        view.findViewById(R.id.btnChangePassword).setOnClickListener(v ->
-                Toast.makeText(requireContext(), "Password change requires account login", Toast.LENGTH_SHORT).show());
+        view.findViewById(R.id.btnLockScreen).setOnClickListener(v -> lockScreenNow());
 
         view.findViewById(R.id.btnLogout).setOnClickListener(v -> {
             requireContext()
@@ -202,5 +201,23 @@ public class ProfileFragment extends Fragment {
 
     private SharedPreferences getProfilePrefs() {
         return requireContext().getSharedPreferences("profile", requireContext().MODE_PRIVATE);
+    }
+
+    private void lockScreenNow() {
+        SharedPreferences settingsPrefs =
+                requireContext().getSharedPreferences("settings", requireContext().MODE_PRIVATE);
+
+        boolean passcodeEnabled = settingsPrefs.getBoolean("passcode_enabled", false);
+
+        if (!passcodeEnabled) {
+            Toast.makeText(requireContext(), getString(R.string.enable_passcode_first), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        settingsPrefs.edit()
+                .putBoolean("passcode_unlocked", false)
+                .apply();
+
+        startActivity(new Intent(requireContext(), PasscodeActivity.class));
     }
 }

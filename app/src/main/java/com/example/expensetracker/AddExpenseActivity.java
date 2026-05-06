@@ -3,6 +3,7 @@ package com.example.expensetracker;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -15,6 +16,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -23,6 +25,14 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class AddExpenseActivity extends AppCompatActivity {
+
+    private final String[] expenseCategoryValues = {
+            "Food", "Entertainment", "Transport", "Shopping", "Bills", "Other"
+    };
+
+    private final String[] recurringIntervalValues = {
+            "Weekly", "Monthly", "Yearly"
+    };
 
     private boolean isEditMode = false;
     private int editingExpenseId = -1;
@@ -35,8 +45,18 @@ public class AddExpenseActivity extends AppCompatActivity {
     private TextInputEditText etNote;
     private CheckBox cbRecurring;
 
+    private void applySavedTheme() {
+        SharedPreferences prefs = getSharedPreferences("settings", MODE_PRIVATE);
+        boolean darkMode = prefs.getBoolean("dark_mode", false);
+
+        AppCompatDelegate.setDefaultNightMode(
+                darkMode ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
+        );
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        applySavedTheme();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_expense);
 
@@ -59,22 +79,8 @@ public class AddExpenseActivity extends AppCompatActivity {
         MaterialButton btnSaveExpense = findViewById(R.id.btnSaveExpense);
         MaterialButton btnCancel = findViewById(R.id.btnCancel);
 
-        ArrayAdapter<CharSequence> categoryAdapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.expense_categories,
-                android.R.layout.simple_spinner_item
-        );
-        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerAddCategory.setAdapter(categoryAdapter);
-
-        ArrayAdapter<String> recurringAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_item,
-                new String[]{"Weekly", "Monthly", "Yearly"}
-        );
-        recurringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerRecurringInterval.setAdapter(recurringAdapter);
-        spinnerRecurringInterval.setVisibility(View.GONE);
+        setupCategorySpinner();
+        setupRecurringSpinner();
 
         cbRecurring.setOnCheckedChangeListener((buttonView, isChecked) ->
                 spinnerRecurringInterval.setVisibility(isChecked ? View.VISIBLE : View.GONE));
@@ -103,18 +109,16 @@ public class AddExpenseActivity extends AppCompatActivity {
             cbRecurring.setChecked(isRecurring);
             spinnerRecurringInterval.setVisibility(isRecurring ? View.VISIBLE : View.GONE);
 
-            String[] categories = getResources().getStringArray(R.array.expense_categories);
-            for (int i = 0; i < categories.length; i++) {
-                if (categories[i].equals(category)) {
+            for (int i = 0; i < expenseCategoryValues.length; i++) {
+                if (expenseCategoryValues[i].equals(category)) {
                     spinnerAddCategory.setSelection(i);
                     break;
                 }
             }
 
             if (recurringInterval != null) {
-                String[] intervals = {"Weekly", "Monthly", "Yearly"};
-                for (int i = 0; i < intervals.length; i++) {
-                    if (intervals[i].equals(recurringInterval)) {
+                for (int i = 0; i < recurringIntervalValues.length; i++) {
+                    if (recurringIntervalValues[i].equals(recurringInterval)) {
                         spinnerRecurringInterval.setSelection(i);
                         break;
                     }
@@ -126,6 +130,35 @@ public class AddExpenseActivity extends AppCompatActivity {
 
         btnSaveExpense.setOnClickListener(v -> saveExpense());
         btnCancel.setOnClickListener(v -> finish());
+    }
+
+    private void setupCategorySpinner() {
+        String[] displayCategories = getResources().getStringArray(R.array.expense_categories_display);
+
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                displayCategories
+        );
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerAddCategory.setAdapter(categoryAdapter);
+    }
+
+    private void setupRecurringSpinner() {
+        String[] recurringDisplay = {
+                getString(R.string.weekly),
+                getString(R.string.monthly),
+                getString(R.string.yearly)
+        };
+
+        ArrayAdapter<String> recurringAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                recurringDisplay
+        );
+        recurringAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerRecurringInterval.setAdapter(recurringAdapter);
+        spinnerRecurringInterval.setVisibility(View.GONE);
     }
 
     private void setTodayDate() {
@@ -144,10 +177,10 @@ public class AddExpenseActivity extends AppCompatActivity {
         String amountText = etAmount.getText() != null ? etAmount.getText().toString().trim() : "";
         String date = etDate.getText() != null ? etDate.getText().toString().trim() : "";
         String note = etNote.getText() != null ? etNote.getText().toString().trim() : "";
-        String category = spinnerAddCategory.getSelectedItem().toString();
+        String category = expenseCategoryValues[spinnerAddCategory.getSelectedItemPosition()];
         boolean isRecurring = cbRecurring.isChecked();
         String recurringInterval = isRecurring
-                ? spinnerRecurringInterval.getSelectedItem().toString()
+                ? recurringIntervalValues[spinnerRecurringInterval.getSelectedItemPosition()]
                 : "None";
 
         TextInputLayout tilAmount = findViewById(R.id.tilAmount);

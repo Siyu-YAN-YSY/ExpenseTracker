@@ -1,5 +1,6 @@
 package com.example.expensetracker;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -74,16 +75,24 @@ public class HomeFragment extends Fragment {
     private PieChartManager pieChartManager;
     private EmptyStateHelper emptyStateHelper;
 
+    private final String[] filterCategoryValues = {
+            "All", "Food", "Entertainment", "Transport", "Shopping", "Bills", "Other"
+    };
+
+    private final String[] sortValueKeys = {
+            "NEWEST", "OLDEST", "HIGHEST", "LOWEST", "CATEGORY"
+    };
+
     private final ActivityResultLauncher<Intent> addExpenseLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == requireActivity().RESULT_OK) {
-                    refreshExpenseData();
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    refreshHomeData();
                 }
             });
 
     private final ActivityResultLauncher<Intent> exportCsvLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-                if (result.getResultCode() == requireActivity().RESULT_OK && result.getData() != null) {
+                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
                     Uri uri = result.getData().getData();
                     if (uri != null) {
                         csvExportManager.exportToCsv(uri);
@@ -109,14 +118,19 @@ public class HomeFragment extends Fragment {
         setupToolbar(view);
         setupMenu();
         initializeViews(view);
-        initializeHelpers();
         setupRecyclerView(view);
         setupCategorySpinner();
         setupSortSpinner();
         setupMonthSpinner();
         setupListeners(view);
         updateWelcomeMessage();
-        refreshExpenseData();
+        refreshHomeData();
+    }
+
+    @Override
+    public void onAttach(@NonNull android.content.Context context) {
+        super.onAttach(context);
+        initializeHelpers(context);
     }
 
     @Override
@@ -188,14 +202,14 @@ public class HomeFragment extends Fragment {
         pieChartManager = new PieChartManager(pieChart);
     }
 
-    private void initializeHelpers() {
-        ExpenseDatabase database = ExpenseDatabase.getDatabase(requireContext());
+    private void initializeHelpers(android.content.Context context) {
+        ExpenseDatabase database = ExpenseDatabase.getDatabase(context);
         ExpenseDateUtils dateUtils = new ExpenseDateUtils();
 
         expenseRepository = new ExpenseRepository(database);
-        budgetManager = new BudgetManager(requireContext());
-        csvExportManager = new CsvExportManager(requireContext(), expenseRepository);
-        recurringExpenseManager = new RecurringExpenseManager(requireContext(), expenseRepository, dateUtils);
+        budgetManager = new BudgetManager(context);
+        csvExportManager = new CsvExportManager(context, expenseRepository);
+        recurringExpenseManager = new RecurringExpenseManager(context, expenseRepository, dateUtils);
         expenseFilterSorter = new ExpenseFilterSorter(dateUtils);
         emptyStateHelper = new EmptyStateHelper();
     }
@@ -207,7 +221,7 @@ public class HomeFragment extends Fragment {
                 filteredList,
                 expense -> {
                     expenseRepository.deleteExpense(expense);
-                    refreshExpenseData();
+                    refreshHomeData();
                 },
                 this::openEditExpense
         );
@@ -218,10 +232,12 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupCategorySpinner() {
-        ArrayAdapter<CharSequence> filterAdapter = ArrayAdapter.createFromResource(
+        String[] displayCategories = getResources().getStringArray(R.array.filter_categories_display);
+
+        ArrayAdapter<String> filterAdapter = new ArrayAdapter<>(
                 requireContext(),
-                R.array.filter_categories,
-                android.R.layout.simple_spinner_item
+                android.R.layout.simple_spinner_item,
+                displayCategories
         );
         filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(filterAdapter);
@@ -240,11 +256,11 @@ public class HomeFragment extends Fragment {
 
     private void setupSortSpinner() {
         String[] sortOptions = {
-                "Newest First",
-                "Oldest First",
-                "Highest Amount",
-                "Lowest Amount",
-                "Category A-Z"
+                getString(R.string.newest_first),
+                getString(R.string.oldest_first),
+                getString(R.string.highest_amount),
+                getString(R.string.lowest_amount),
+                getString(R.string.category_a_z)
         };
 
         ArrayAdapter<String> sortAdapter = new ArrayAdapter<>(
@@ -276,10 +292,10 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupMonthSpinner() {
-        String currentSelection = getSelectedMonth();
+        String currentSelection = getSelectedMonthValue();
 
         List<String> months = new ArrayList<>();
-        months.add("All");
+        months.add(getString(R.string.all));
         months.addAll(expenseRepository.getAvailableMonths());
 
         ArrayAdapter<String> adapterMonth = new ArrayAdapter<>(
@@ -290,10 +306,15 @@ public class HomeFragment extends Fragment {
         adapterMonth.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMonth.setAdapter(adapterMonth);
 
-        int index = months.indexOf(currentSelection);
-        if (index >= 0) {
-            spinnerMonth.setSelection(index);
+        int index = 0;
+        if (!"All".equals(currentSelection)) {
+            index = months.indexOf(currentSelection);
+            if (index < 0) {
+                index = 0;
+            }
         }
+
+        spinnerMonth.setSelection(index);
 
         spinnerMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -305,6 +326,20 @@ public class HomeFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+    }
+
+    private String getSelectedMonthValue() {
+        if (spinnerMonth == null) {
+            return "All";
+        }
+
+        int position = spinnerMonth.getSelectedItemPosition();
+        if (position <= 0) {
+            return "All";
+        }
+
+        Object item = spinnerMonth.getSelectedItem();
+        return item != null ? item.toString() : "All";
     }
 
     private void setupListeners(View view) {
@@ -330,17 +365,20 @@ public class HomeFragment extends Fragment {
 
         String greeting;
         if (hour < 12) {
-            greeting = "Good morning, ";
+            greeting = getString(R.string.good_morning);
         } else if (hour < 18) {
-            greeting = "Good afternoon, ";
+            greeting = getString(R.string.good_afternoon);
         } else {
-            greeting = "Good evening, ";
+            greeting = getString(R.string.good_evening);
         }
 
-        tvWelcomeUser.setText(greeting + name);
+        tvWelcomeUser.setText(greeting +", "+ name);
     }
 
-    private void refreshExpenseData() {
+    public void refreshHomeData() {
+        if (!isAdded() || recurringExpenseManager == null || spinnerMonth == null) {
+            return;
+        }
         recurringExpenseManager.generateDueRecurringExpenses();
         setupMonthSpinner();
         loadExpensesFromDatabase();
@@ -348,7 +386,7 @@ public class HomeFragment extends Fragment {
 
     private void loadExpensesFromDatabase() {
         masterList.clear();
-        masterList.addAll(expenseRepository.getExpenses(getSelectedMonth(), getSelectedCategory()));
+        masterList.addAll(expenseRepository.getExpenses(getSelectedMonthValue(), getSelectedCategory()));
         applySearchAndSort();
     }
 
@@ -387,7 +425,7 @@ public class HomeFragment extends Fragment {
 
         tvBudget.setText(CurrencyManager.formatBudgetLabel(requireContext(), budget));
 
-        if ("All".equals(getSelectedMonth())) {
+        if ("All".equals(getSelectedMonthValue())) {
             tvRemaining.setText("Select a month to view remaining budget");
             tvRemaining.setTextColor(Color.GRAY);
             return;
@@ -488,14 +526,14 @@ public class HomeFragment extends Fragment {
 
     private void openSummary() {
         Intent intent = new Intent(requireContext(), SummaryActivity.class);
-        intent.putExtra("selected_month", getSelectedMonth());
+        intent.putExtra("selected_month", getSelectedMonthValue());
         intent.putExtra("selected_category", getSelectedCategory());
         startActivity(intent);
     }
 
     private void openInsights() {
         Intent intent = new Intent(requireContext(), InsightsActivity.class);
-        intent.putExtra("selected_month", getSelectedMonth());
+        intent.putExtra("selected_month", getSelectedMonthValue());
         startActivity(intent);
     }
 
@@ -519,21 +557,29 @@ public class HomeFragment extends Fragment {
     }
 
     private String getSelectedCategory() {
-        return spinnerCategory.getSelectedItem() != null
-                ? spinnerCategory.getSelectedItem().toString()
-                : "All";
+        int position = spinnerCategory != null ? spinnerCategory.getSelectedItemPosition() : 0;
+
+        if (position < 0 || position >= filterCategoryValues.length) {
+            return "All";
+        }
+
+        return filterCategoryValues[position];
     }
 
     private String getSelectedMonth() {
         return spinnerMonth != null && spinnerMonth.getSelectedItem() != null
                 ? spinnerMonth.getSelectedItem().toString()
-                : "All";
+                : getString(R.string.all);
     }
 
     private String getSelectedSort() {
-        return spinnerSort != null && spinnerSort.getSelectedItem() != null
-                ? spinnerSort.getSelectedItem().toString()
-                : "Newest First";
+        int position = spinnerSort != null ? spinnerSort.getSelectedItemPosition() : 0;
+
+        if (position < 0 || position >= sortValueKeys.length) {
+            return "NEWEST";
+        }
+
+        return sortValueKeys[position];
     }
 
     private String getSearchQuery() {

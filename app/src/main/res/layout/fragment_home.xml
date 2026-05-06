@@ -114,7 +114,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="$0.00"
+                            android:text="@string/_0_00"
                             android:textColor="@color/success_dark"
                             android:textSize="34sp"
                             android:textStyle="bold" />

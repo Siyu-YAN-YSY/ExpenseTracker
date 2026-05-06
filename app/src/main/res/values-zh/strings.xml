@@ -146,7 +146,65 @@
     <string name="other">其他</string>
     <string name="save">保存</string>
 
+
+    <string name="security">安全</string>
+    <string name="passcode">密码</string>
+    <string name="passcode_on">密码：已开启</string>
+    <string name="passcode_off">密码：已关闭</string>
+    <string name="set_or_change_your_app_passcode">设置或更改应用密码</string>
+    <string name="enable_passcode">启用密码</string>
+    <string name="lock_the_app_with_a_4_digit_code">使用 4 位数字密码锁定应用</string>
+    <string name="set_passcode">设置密码</string>
+    <string name="change_passcode">更改密码</string>
+    <string name="enter_4_digit_passcode">输入 4 位密码</string>
+    <string name="passcode_must_be_4_digits">密码必须为 4 位数字</string>
+    <string name="passcode_saved">密码已保存</string>
+    <string name="passcode_removed">密码已移除</string>
+    <string name="enter_passcode">输入密码</string>
+    <string name="unlock">解锁</string>
+    <string name="incorrect_passcode">密码错误</string>
+    <string name="clear">清除</string>
+
+
+    <string name="update_your_app_password">更新应用密码</string>
+    <string name="current_password">当前密码</string>
+    <string name="new_password">新密码</string>
+    <string name="confirm_password">确认密码</string>
+    <string name="current_password_incorrect">当前密码错误</string>
+    <string name="password_must_be_at_least_4_characters">密码至少需要 4 个字符</string>
+    <string name="passwords_do_not_match">两次输入的密码不一致</string>
+    <string name="password_updated">密码已更新</string>
+
+
+    <string name="lock_screen">锁定屏幕</string>
+    <string name="enable_passcode_first">请先在设置中启用密码</string>
+
+    <string name="enter_current_passcode">输入当前密码</string>
+    <string name="turn_off_passcode">关闭密码</string>
+    <string name="confirm">确认</string>
+    <string name="edit">编辑</string>
+    <string name="all">全部</string>
+    <string name="newest_first">最新优先</string>
+    <string name="oldest_first">最旧优先</string>
+    <string name="highest_amount">金额从高到低</string>
+    <string name="lowest_amount">金额从低到高</string>
+    <string name="category_a_z">类别 A-Z</string>
+
+    <string name="weekly">每周</string>
+    <string name="monthly">每月</string>
+    <string name="yearly">每年</string>
+
+
     <string-array name="expense_categories">
+        <item>Food</item>
+        <item>Entertainment</item>
+        <item>Transport</item>
+        <item>Shopping</item>
+        <item>Bills</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="expense_categories_display">
         <item>餐饮</item>
         <item>娱乐</item>
         <item>交通</item>
@@ -156,6 +214,16 @@
     </string-array>
 
     <string-array name="filter_categories">
+        <item>All</item>
+        <item>Food</item>
+        <item>Entertainment</item>
+        <item>Transport</item>
+        <item>Shopping</item>
+        <item>Bills</item>
+        <item>Other</item>
+    </string-array>
+
+    <string-array name="filter_categories_display">
         <item>全部</item>
         <item>餐饮</item>
         <item>娱乐</item>

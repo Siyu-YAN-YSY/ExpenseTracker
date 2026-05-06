@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class ExpenseFilterSorter {
+
     private final ExpenseDateUtils dateUtils;
 
     public ExpenseFilterSorter(ExpenseDateUtils dateUtils) {
@@ -25,7 +26,9 @@ public class ExpenseFilterSorter {
     }
 
     private boolean matchesSearch(ExpenseEntity expense, String query) {
-        if (query.isEmpty()) return true;
+        if (query.isEmpty()) {
+            return true;
+        }
 
         String note = safeLower(expense.getNote());
         String category = safeLower(expense.getCategory());
@@ -43,24 +46,32 @@ public class ExpenseFilterSorter {
     }
 
     private void sort(List<ExpenseEntity> expenses, String sortOption) {
-        String sort = sortOption == null ? "Newest First" : sortOption;
+        String sort = sortOption == null ? "NEWEST" : sortOption;
 
         switch (sort) {
-            case "Oldest First":
+            case "OLDEST":
                 Collections.sort(expenses, dateUtils::compareByDate);
                 break;
-            case "Highest Amount":
-                Collections.sort(expenses, (a, b) -> Double.compare(b.getAmountValue(), a.getAmountValue()));
+
+            case "HIGHEST":
+                Collections.sort(expenses, (a, b) ->
+                        Double.compare(b.getAmountValue(), a.getAmountValue()));
                 break;
-            case "Lowest Amount":
-                Collections.sort(expenses, (a, b) -> Double.compare(a.getAmountValue(), b.getAmountValue()));
+
+            case "LOWEST":
+                Collections.sort(expenses, (a, b) ->
+                        Double.compare(a.getAmountValue(), b.getAmountValue()));
                 break;
-            case "Category A-Z":
-                Collections.sort(expenses, (a, b) -> safeLower(a.getCategory()).compareTo(safeLower(b.getCategory())));
+
+            case "CATEGORY":
+                Collections.sort(expenses, (a, b) ->
+                        safeLower(a.getCategory()).compareTo(safeLower(b.getCategory())));
                 break;
-            case "Newest First":
+
+            case "NEWEST":
             default:
-                Collections.sort(expenses, (a, b) -> -dateUtils.compareByDate(a, b));
+                Collections.sort(expenses, (a, b) ->
+                        -dateUtils.compareByDate(a, b));
                 break;
         }
     }
