@@ -50,11 +50,17 @@ public class CurrencyManager {
         }
     }
 
-    public static String formatBudgetLabel(Context context, double amount) {
-        return "Budget: " + formatAmount(context, amount);
+    public static String formatBudgetLabel(Context context, float budget) {
+        return context.getString(
+                R.string.budget_s,
+                formatAmount(context, budget)
+        );
     }
 
-    public static String formatRemainingLabel(Context context, double amount) {
-        return "Remaining: " + formatAmount(context, amount);
+    public static String formatRemainingLabel(Context context, double remaining) {
+        return context.getString(
+                R.string.remaining_s,
+                formatAmount(context, remaining)
+        );
     }
 }

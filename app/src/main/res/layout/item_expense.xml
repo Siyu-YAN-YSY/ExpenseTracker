@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Food | 04/21/2026"
+            android:text="@string/food_04_21_2026"
             android:textColor="#666666"
             android:textSize="14sp" />
 
@@ -61,7 +61,7 @@
             android:background="#E8EAF6"
             android:paddingHorizontal="10dp"
             android:paddingVertical="4dp"
-            android:text="Repeats Monthly"
+            android:text="@string/repeats_monthly"
             android:textColor="#3949AB"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -72,7 +72,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="Lunch with friends"
+            android:text="@string/lunch_with_friends"
             android:textSize="15sp" />
 
         <LinearLayout

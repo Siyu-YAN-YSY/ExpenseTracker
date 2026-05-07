@@ -51,10 +51,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+
 public class HomeFragment extends Fragment {
 
     private final ArrayList<ExpenseEntity> masterList = new ArrayList<>();
     private final ArrayList<ExpenseEntity> filteredList = new ArrayList<>();
+
+
 
     private ExpenseAdapterRoom expenseAdapter;
     private TextView tvWelcomeUser;
@@ -199,7 +202,7 @@ public class HomeFragment extends Fragment {
         etSearchExpense = view.findViewById(R.id.etSearchExpense);
 
         PieChart pieChart = view.findViewById(R.id.pieChart);
-        pieChartManager = new PieChartManager(pieChart);
+        pieChartManager = new PieChartManager(requireContext(), pieChart);
     }
 
     private void initializeHelpers(android.content.Context context) {
@@ -417,8 +420,8 @@ public class HomeFragment extends Fragment {
         double totalExpense = ExpenseCalculator.getTotal(filteredList);
 
         if (budget == 0f) {
-            tvBudget.setText("Budget: Not Set");
-            tvRemaining.setText("Set a monthly budget to track spending");
+            tvBudget.setText(getString(R.string.budget_not_set));
+            tvRemaining.setText(getString(R.string.set_a_monthly_budget_to_track_spending));
             tvRemaining.setTextColor(Color.GRAY);
             return;
         }
@@ -426,7 +429,7 @@ public class HomeFragment extends Fragment {
         tvBudget.setText(CurrencyManager.formatBudgetLabel(requireContext(), budget));
 
         if ("All".equals(getSelectedMonthValue())) {
-            tvRemaining.setText("Select a month to view remaining budget");
+            tvRemaining.setText(getString(R.string.select_a_month_to_view_remaining_budget));
             tvRemaining.setTextColor(Color.GRAY);
             return;
         }
@@ -543,16 +546,9 @@ public class HomeFragment extends Fragment {
 
     private void showInfoDialog() {
         new AlertDialog.Builder(requireContext())
-                .setTitle("ET Wallet App")
-                .setMessage("Track your daily spending easily.\n\n"
-                        + "• Add, edit, and delete expenses\n"
-                        + "• Filter, search, and sort expenses\n"
-                        + "• Compare this month to last month\n"
-                        + "• View charts, smart insights, and budget warnings\n"
-                        + "• Export your expense history to CSV\n"
-                        + "• Mark expenses as recurring\n\n"
-                        + "Stay organized and in control of your finances!")
-                .setPositiveButton("OK", null)
+                .setTitle(R.string.info_title)
+                .setMessage(R.string.info_message)
+                .setPositiveButton(R.string.ok, null)
                 .show();
     }
 

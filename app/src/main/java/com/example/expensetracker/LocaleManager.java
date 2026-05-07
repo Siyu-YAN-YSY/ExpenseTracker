@@ -32,10 +32,10 @@ public class LocaleManager {
         return context.createConfigurationContext(config);
     }
 
-    public static String getLanguageDisplayName(String code) {
+    public static String getLanguageDisplayName(Context context, String code) {
         if (code.equals("zh")) {
-            return "Chinese";
+            return context.getString(R.string.chinese);
         }
-        return "English";
+        return context.getString(R.string.english);
     }
 }

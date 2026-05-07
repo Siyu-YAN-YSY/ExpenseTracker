@@ -123,7 +123,7 @@ public class SettingsFragment extends Fragment {
 
         String languageCode = getPrefs().getString("language", "en");
         tvLanguage.setText(getString(R.string.language) + ": "
-                + LocaleManager.getLanguageDisplayName(languageCode));
+                + LocaleManager.getLanguageDisplayName(requireContext(), languageCode));
 
         boolean passcodeEnabled = getPrefs().getBoolean("passcode_enabled", false);
         switchPasscode.setChecked(passcodeEnabled);

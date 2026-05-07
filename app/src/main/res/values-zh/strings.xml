@@ -193,6 +193,50 @@
     <string name="weekly">每周</string>
     <string name="monthly">每月</string>
     <string name="yearly">每年</string>
+    <string name="no_chart_data">暂无图表数据</string>
+
+    <string name="insight_first_month_comparison">这是第一个有对比数据的月份，因此下个月会更有意义。</string>
+    <string name="insight_spending_increased">与上个月相比，支出增加了 %1$s。请查看哪些分类变化最大。</string>
+    <string name="insight_spending_decreased">与上个月相比，支出减少了 %1$s。表现不错。</string>
+    <string name="insight_spending_same">支出与上个月完全相同。</string>
+    <string name="insight_highest_category">最高的分类是 %1$s，为 %2$s。</string>
+    <string name="insight_daily_average">您每天大约花费 %1$s。</string>
+    <string name="insight_over_monthly_budget">您已超出每月预算 %1$s。</string>
+    <string name="insight_may_go_over_budget">按此速度，您可能会超出预算 %1$s。</string>
+    <string name="insight_should_stay_under_budget">按此速度，您预计将低于预算约 %1$s。</string>
+    <string name="insight_set_monthly_budget">设置每月预算以获得更强的预算提醒。</string>
+    <string name="insight_category_over_budget">%1$s 已超出其分类预算 %2$s。</string>
+    <string name="insight_category_close_budget">%1$s 接近其分类预算。</string>
+
+    <string name="analyzing_month_compared">正在分析 %1$02d/%2$d，与 %3$02d/%4$d 对比</string>
+    <string name="compared_to_last_month">与上个月相比 %1$s</string>
+    <string name="difference_percent_compared_to_last_month">与上个月相比 %1$s%2$s（%3$.1f%%）</string>
+    <string name="health_score_value">%1$d/100</string>
+    <string name="budget_usage_projected">已使用每月预算的 %1$.1f%%。预计使用：%2$.1f%%。</string>
+    <string name="top_category_highest">%1$s 最高，为 %2$s</string>
+    <string name="no_note">无备注</string>
+    <string name="highest_expense_detail">%1$s • %2$s • %3$s • %4$s</string>
+    <string name="amount_per_day">每天 %1$s</string>
+    <string name="amount_projected_for_month">本月预计 %1$s</string>
+
+    <string name="health_no_data">无数据</string>
+    <string name="health_budget_needed">需要预算</string>
+    <string name="health_over_budget_risk">超出预算风险</string>
+    <string name="health_warning">警告</string>
+
+    <string name="food_04_21_2026">餐饮 | 04/21/2026</string>
+    <string name="repeats_monthly">每月重复</string>
+    <string name="lunch_with_friends">和朋友共进午餐</string>
+    <string name="repeats_interval">每%1$s重复</string>
+    <string name="budget_s">预算：%1$s</string>
+    <string name="remaining_s">剩余：%1$s</string>
+
+    <string name="information">信息</string>
+    <string name="uninstall">卸载</string>
+
+    <string name="info_title">ET Wallet 应用</string>
+    <string name="info_message">轻松记录你的日常支出。\n\n• 添加、编辑和删除支出\n• 筛选、搜索和排序支出\n• 比较本月和上月支出\n• 查看图表、智能洞察和预算提醒\n• 将支出记录导出为 CSV\n• 标记重复支出\n\n保持有条理，更好地管理你的财务！</string>
+    <string name="ok">确定</string>
 
 
     <string-array name="expense_categories">

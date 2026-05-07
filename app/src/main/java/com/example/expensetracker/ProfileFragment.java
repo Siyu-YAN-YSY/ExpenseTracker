@@ -113,7 +113,7 @@ public class ProfileFragment extends Fragment {
 
         tvProfileName.setText(savedName);
         tvProfileEmail.setText(savedEmail);
-        tvProfileJoined.setText("Using ET Wallet since 2025");
+        tvProfileJoined.setText(getString(R.string.using_et_wallet_since_2025));
 
         ExpenseDatabase database = ExpenseDatabase.getDatabase(requireContext());
         List<ExpenseEntity> allExpenses = database.expenseDao().getAllExpenses();
@@ -162,9 +162,9 @@ public class ProfileFragment extends Fragment {
         layout.addView(etEmail);
 
         new AlertDialog.Builder(requireContext())
-                .setTitle("Edit Profile")
+                .setTitle(getString(R.string.edit_profile))
                 .setView(layout)
-                .setPositiveButton("Save", (dialog, which) -> {
+                .setPositiveButton(getString(R.string.save), (dialog, which) -> {
                     String name = etName.getText().toString().trim();
                     String email = etEmail.getText().toString().trim();
 
@@ -179,7 +179,7 @@ public class ProfileFragment extends Fragment {
                     loadProfileData();
                     Toast.makeText(requireContext(), "Profile updated", Toast.LENGTH_SHORT).show();
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton(getString(R.string.cancel), null)
                 .show();
     }
 

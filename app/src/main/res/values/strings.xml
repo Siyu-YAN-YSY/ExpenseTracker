@@ -194,6 +194,47 @@
     <string name="weekly">Weekly</string>
     <string name="monthly">Monthly</string>
     <string name="yearly">Yearly</string>
+    <string name="no_chart_data">No chart data</string>
+
+    <string name="insight_first_month_comparison">This is the first month with comparison data, so next month will be more meaningful.</string>
+    <string name="insight_spending_increased">Spending increased by %1$s compared to last month. Check which categories changed the most.</string>
+    <string name="insight_spending_decreased">Spending decreased by %1$s compared to last month. Nice improvement.</string>
+    <string name="insight_spending_same">Spending is exactly the same as last month.</string>
+    <string name="insight_highest_category">Your highest category is %1$s at %2$s.</string>
+    <string name="insight_daily_average">You are spending about %1$s per day.</string>
+    <string name="insight_over_monthly_budget">You are already %1$s over your monthly budget.</string>
+    <string name="insight_may_go_over_budget">At this pace, you may go over budget by %1$s.</string>
+    <string name="insight_should_stay_under_budget">At this pace, you should stay under budget by about %1$s.</string>
+    <string name="insight_set_monthly_budget">Set a monthly budget to unlock stronger budget warnings.</string>
+    <string name="insight_category_over_budget">%1$s is over its category budget by %2$s.</string>
+    <string name="insight_category_close_budget">%1$s is close to its category budget.</string>
+
+    <string name="analyzing_month_compared">Analyzing %1$02d/%2$d compared with %3$02d/%4$d</string>
+    <string name="compared_to_last_month">%1$s compared to last month</string>
+    <string name="difference_percent_compared_to_last_month">%1$s%2$s (%3$.1f%%) compared to last month</string>
+    <string name="health_score_value">%1$d/100</string>
+    <string name="budget_usage_projected">Used %1$.1f%% of monthly budget. Projected usage: %2$.1f%%.</string>
+    <string name="top_category_highest">%1$s is highest at %2$s</string>
+    <string name="no_note">No note</string>
+    <string name="highest_expense_detail">%1$s • %2$s • %3$s • %4$s</string>
+    <string name="amount_per_day">%1$s per day</string>
+    <string name="amount_projected_for_month">%1$s projected for the month</string>
+
+    <string name="health_no_data">No Data</string>
+    <string name="health_budget_needed">Budget Needed</string>
+    <string name="health_over_budget_risk">Over Budget Risk</string>
+    <string name="health_warning">Warning</string>
+    <string name="food_04_21_2026">Food | 04/21/2026</string>
+    <string name="repeats_monthly">Repeats Monthly</string>
+    <string name="lunch_with_friends">Lunch with friends</string>
+    <string name="repeats_interval">Repeats %1$s</string>
+    <string name="budget_s">Budget: %1$s</string>
+    <string name="remaining_s">Remaining: %1$s</string>
+    <string name="information">Information</string>
+    <string name="uninstall">Uninstall</string>
+    <string name="info_title">ET Wallet App</string>
+    <string name="info_message">Track your daily spending easily.\n\n• Add, edit, and delete expenses\n• Filter, search, and sort expenses\n• Compare this month to last month\n• View charts, smart insights, and budget warnings\n• Export your expense history to CSV\n• Mark expenses as recurring\n\nStay organized and in control of your finances!</string>
+    <string name="ok">OK</string>
 
 
     <string-array name="expense_categories">
