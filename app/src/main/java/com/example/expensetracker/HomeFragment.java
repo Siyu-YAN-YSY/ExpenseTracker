@@ -51,14 +51,15 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-
 public class HomeFragment extends Fragment {
 
+    // Stores all expenses loaded from the database before search and sort are applied
     private final ArrayList<ExpenseEntity> masterList = new ArrayList<>();
+
+    // Stores the expenses currently displayed after filtering and sorting
     private final ArrayList<ExpenseEntity> filteredList = new ArrayList<>();
 
-
-
+    // UI components and helper classes used on the home screen
     private ExpenseAdapterRoom expenseAdapter;
     private TextView tvWelcomeUser;
     private TextView tvTotalAmount;
@@ -78,14 +79,17 @@ public class HomeFragment extends Fragment {
     private PieChartManager pieChartManager;
     private EmptyStateHelper emptyStateHelper;
 
+    // Internal category values used for filtering database results
     private final String[] filterCategoryValues = {
             "All", "Food", "Entertainment", "Transport", "Shopping", "Bills", "Other"
     };
 
+    // Internal sort keys that match the selected sort spinner position
     private final String[] sortValueKeys = {
             "NEWEST", "OLDEST", "HIGHEST", "LOWEST", "CATEGORY"
     };
 
+    // Handles the result after adding or editing an expense
     private final ActivityResultLauncher<Intent> addExpenseLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
@@ -93,6 +97,7 @@ public class HomeFragment extends Fragment {
                 }
             });
 
+    // Handles the result after the user chooses where to save the CSV file
     private final ActivityResultLauncher<Intent> exportCsvLauncher =
             registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
                 if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
@@ -103,9 +108,11 @@ public class HomeFragment extends Fragment {
                 }
             });
 
+    // Required empty constructor for the Fragment
     public HomeFragment() {
     }
 
+    // Inflates the home fragment layout
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -113,6 +120,7 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+    // Sets up the UI after the layout has been created
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -130,18 +138,21 @@ public class HomeFragment extends Fragment {
         refreshHomeData();
     }
 
+    // Initializes helper classes when the fragment is attached to a context
     @Override
     public void onAttach(@NonNull android.content.Context context) {
         super.onAttach(context);
         initializeHelpers(context);
     }
 
+    // Updates greeting when returning to this screen
     @Override
     public void onResume() {
         super.onResume();
         updateWelcomeMessage();
     }
 
+    // Adds system bar padding so content is not hidden behind the status/navigation bars
     private void applyWindowInsets(View root) {
         View rootView = root.findViewById(R.id.homeRoot);
         ViewCompat.setOnApplyWindowInsetsListener(rootView, (v, insets) -> {
@@ -151,16 +162,19 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    // Sets the fragment toolbar as the activity action bar
     private void setupToolbar(View view) {
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
         activity.setSupportActionBar(toolbar);
 
+        // Hides the default title because the layout has its own title/header
         if (activity.getSupportActionBar() != null) {
             activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
     }
 
+    // Adds toolbar menu actions for info and uninstall
     private void setupMenu() {
         MenuHost menuHost = requireActivity();
         menuHost.addMenuProvider(new MenuProvider() {
@@ -173,11 +187,13 @@ public class HomeFragment extends Fragment {
             public boolean onMenuItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
 
+                // Opens app information dialog
                 if (id == R.id.info) {
                     showInfoDialog();
                     return true;
                 }
 
+                // Opens the system uninstall screen for this app
                 if (id == R.id.uninstall) {
                     Intent delete = new Intent(Intent.ACTION_DELETE,
                             Uri.parse("package:" + requireContext().getPackageName()));
@@ -190,6 +206,7 @@ public class HomeFragment extends Fragment {
         }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
     }
 
+    // Connects Java variables to their XML layout views
     private void initializeViews(View view) {
         tvWelcomeUser = view.findViewById(R.id.tvWelcomeUser);
         tvTotalAmount = view.findViewById(R.id.tvTotalAmount);
@@ -201,10 +218,12 @@ public class HomeFragment extends Fragment {
         spinnerSort = view.findViewById(R.id.spinnerSort);
         etSearchExpense = view.findViewById(R.id.etSearchExpense);
 
+        // Creates the helper that controls the pie chart
         PieChart pieChart = view.findViewById(R.id.pieChart);
         pieChartManager = new PieChartManager(requireContext(), pieChart);
     }
 
+    // Creates helper classes used for database access, budgets, export, filtering, and recurring expenses
     private void initializeHelpers(android.content.Context context) {
         ExpenseDatabase database = ExpenseDatabase.getDatabase(context);
         ExpenseDateUtils dateUtils = new ExpenseDateUtils();
@@ -217,6 +236,7 @@ public class HomeFragment extends Fragment {
         emptyStateHelper = new EmptyStateHelper();
     }
 
+    // Sets up the RecyclerView that displays the expense list
     private void setupRecyclerView(View view) {
         RecyclerView recyclerViewExpenses = view.findViewById(R.id.recyclerViewExpenses);
 
@@ -234,6 +254,7 @@ public class HomeFragment extends Fragment {
         recyclerViewExpenses.setNestedScrollingEnabled(true);
     }
 
+    // Sets up the category filter dropdown
     private void setupCategorySpinner() {
         String[] displayCategories = getResources().getStringArray(R.array.filter_categories_display);
 
@@ -245,6 +266,7 @@ public class HomeFragment extends Fragment {
         filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategory.setAdapter(filterAdapter);
 
+        // Reloads expenses when the selected category changes
         spinnerCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -257,6 +279,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    // Sets up the sort dropdown and search field listener
     private void setupSortSpinner() {
         String[] sortOptions = {
                 getString(R.string.newest_first),
@@ -274,6 +297,7 @@ public class HomeFragment extends Fragment {
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerSort.setAdapter(sortAdapter);
 
+        // Re-sorts the current list when the sort option changes
         spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -285,15 +309,19 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        // Re-filters the list whenever the search text changes
         etSearchExpense.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
                 applySearchAndSort();
             }
+
             @Override public void afterTextChanged(Editable s) {}
         });
     }
 
+    // Sets up the month filter dropdown using months found in the database
     private void setupMonthSpinner() {
         String currentSelection = getSelectedMonthValue();
 
@@ -309,6 +337,7 @@ public class HomeFragment extends Fragment {
         adapterMonth.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMonth.setAdapter(adapterMonth);
 
+        // Restores the previous selected month if it still exists
         int index = 0;
         if (!"All".equals(currentSelection)) {
             index = months.indexOf(currentSelection);
@@ -319,6 +348,7 @@ public class HomeFragment extends Fragment {
 
         spinnerMonth.setSelection(index);
 
+        // Reloads expenses when the selected month changes
         spinnerMonth.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -331,6 +361,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    // Returns the selected month filter value
     private String getSelectedMonthValue() {
         if (spinnerMonth == null) {
             return "All";
@@ -345,8 +376,11 @@ public class HomeFragment extends Fragment {
         return item != null ? item.toString() : "All";
     }
 
+    // Sets up button and card click actions on the home screen
     private void setupListeners(View view) {
         FloatingActionButton fabAdd = view.findViewById(R.id.fabAdd);
+
+        // Opens the add expense screen
         fabAdd.setOnClickListener(v ->
                 addExpenseLauncher.launch(new Intent(requireContext(), AddExpenseActivity.class))
         );
@@ -358,6 +392,7 @@ public class HomeFragment extends Fragment {
         view.findViewById(R.id.btnSetBudget).setOnClickListener(v -> showBudgetDialog());
     }
 
+    // Shows a greeting based on the current time and saved profile name
     private void updateWelcomeMessage() {
         String name = requireContext()
                 .getSharedPreferences("profile", requireContext().MODE_PRIVATE)
@@ -375,24 +410,28 @@ public class HomeFragment extends Fragment {
             greeting = getString(R.string.good_evening);
         }
 
-        tvWelcomeUser.setText(greeting +", "+ name);
+        tvWelcomeUser.setText(greeting + ", " + name);
     }
 
+    // Refreshes recurring expenses, month filters, and displayed data
     public void refreshHomeData() {
         if (!isAdded() || recurringExpenseManager == null || spinnerMonth == null) {
             return;
         }
+
         recurringExpenseManager.generateDueRecurringExpenses();
         setupMonthSpinner();
         loadExpensesFromDatabase();
     }
 
+    // Loads expenses from the database using the selected month and category filters
     private void loadExpensesFromDatabase() {
         masterList.clear();
         masterList.addAll(expenseRepository.getExpenses(getSelectedMonthValue(), getSelectedCategory()));
         applySearchAndSort();
     }
 
+    // Applies search and sorting to the loaded expense list
     private void applySearchAndSort() {
         expenseFilterSorter.apply(masterList, filteredList, getSearchQuery(), getSelectedSort());
 
@@ -403,6 +442,7 @@ public class HomeFragment extends Fragment {
         updateDashboard();
     }
 
+    // Updates all dashboard sections after data changes
     private void updateDashboard() {
         updateTotalExpense();
         updateBudgetUI();
@@ -410,15 +450,18 @@ public class HomeFragment extends Fragment {
         pieChartManager.update(filteredList);
     }
 
+    // Calculates and displays the total expense amount
     private void updateTotalExpense() {
         double total = ExpenseCalculator.getTotal(filteredList);
         tvTotalAmount.setText(CurrencyManager.formatAmount(requireContext(), total));
     }
 
+    // Updates the budget and remaining balance display
     private void updateBudgetUI() {
         float budget = budgetManager.getBudget();
         double totalExpense = ExpenseCalculator.getTotal(filteredList);
 
+        // Shows setup message when no monthly budget has been saved
         if (budget == 0f) {
             tvBudget.setText(getString(R.string.budget_not_set));
             tvRemaining.setText(getString(R.string.set_a_monthly_budget_to_track_spending));
@@ -428,6 +471,7 @@ public class HomeFragment extends Fragment {
 
         tvBudget.setText(CurrencyManager.formatBudgetLabel(requireContext(), budget));
 
+        // Remaining budget is only meaningful when a specific month is selected
         if ("All".equals(getSelectedMonthValue())) {
             tvRemaining.setText(getString(R.string.select_a_month_to_view_remaining_budget));
             tvRemaining.setTextColor(Color.GRAY);
@@ -437,12 +481,14 @@ public class HomeFragment extends Fragment {
         double remaining = budget - totalExpense;
         tvRemaining.setText(CurrencyManager.formatRemainingLabel(requireContext(), remaining));
 
+        // Shows red when spending goes over budget, otherwise shows success color
         int color = remaining < 0
                 ? ContextCompat.getColor(requireContext(), android.R.color.holo_red_dark)
                 : ContextCompat.getColor(requireContext(), R.color.success);
         tvRemaining.setTextColor(color);
     }
 
+    // Shows or hides the empty-state message depending on the current list
     private void updateEmptyState() {
         if (!filteredList.isEmpty()) {
             tvEmptyState.setVisibility(View.GONE);
@@ -457,9 +503,11 @@ public class HomeFragment extends Fragment {
         ));
     }
 
+    // Opens a dialog where the user can set or update the monthly budget
     private void showBudgetDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
+        // Custom dialog title
         TextView title = new TextView(requireContext());
         title.setText(R.string.set_monthly_budget);
         title.setTextSize(18f);
@@ -468,6 +516,7 @@ public class HomeFragment extends Fragment {
         title.setTypeface(null, Typeface.BOLD);
         builder.setCustomTitle(title);
 
+        // Dialog layout containing the budget input
         LinearLayout layout = new LinearLayout(requireContext());
         layout.setOrientation(LinearLayout.VERTICAL);
         layout.setPadding(60, 20, 60, 10);
@@ -479,6 +528,7 @@ public class HomeFragment extends Fragment {
         input.setGravity(Gravity.CENTER);
         input.setTextSize(16f);
 
+        // Prefills the dialog with the current budget if one exists
         float currentBudget = budgetManager.getBudget();
         if (currentBudget > 0) {
             input.setText(String.format(Locale.US, "%.2f", currentBudget));
@@ -487,6 +537,7 @@ public class HomeFragment extends Fragment {
         layout.addView(input);
         builder.setView(layout);
 
+        // Saves the entered budget value
         builder.setPositiveButton(R.string.save, (dialog, which) -> {
             String value = input.getText().toString().trim();
             if (!value.isEmpty()) {
@@ -502,6 +553,7 @@ public class HomeFragment extends Fragment {
         builder.setNegativeButton(R.string.cancel, null).show();
     }
 
+    // Starts the Android file picker so the user can choose where to export the CSV
     private void startCsvExport() {
         if (!csvExportManager.hasExpensesToExport()) {
             Toast.makeText(requireContext(), "No expenses to export yet", Toast.LENGTH_SHORT).show();
@@ -515,6 +567,7 @@ public class HomeFragment extends Fragment {
         exportCsvLauncher.launch(intent);
     }
 
+    // Opens AddExpenseActivity in edit mode with the selected expense details
     private void openEditExpense(ExpenseEntity expense) {
         Intent intent = new Intent(requireContext(), AddExpenseActivity.class);
         intent.putExtra("expense_id", expense.getId());
@@ -527,6 +580,7 @@ public class HomeFragment extends Fragment {
         addExpenseLauncher.launch(intent);
     }
 
+    // Opens the summary screen with the current filters
     private void openSummary() {
         Intent intent = new Intent(requireContext(), SummaryActivity.class);
         intent.putExtra("selected_month", getSelectedMonthValue());
@@ -534,16 +588,19 @@ public class HomeFragment extends Fragment {
         startActivity(intent);
     }
 
+    // Opens the insights screen for the currently selected month
     private void openInsights() {
         Intent intent = new Intent(requireContext(), InsightsActivity.class);
         intent.putExtra("selected_month", getSelectedMonthValue());
         startActivity(intent);
     }
 
+    // Opens the category budget screen
     private void openCategoryBudgets() {
         startActivity(new Intent(requireContext(), CategoryBudgetActivity.class));
     }
 
+    // Shows information about the app
     private void showInfoDialog() {
         new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.info_title)
@@ -552,6 +609,7 @@ public class HomeFragment extends Fragment {
                 .show();
     }
 
+    // Returns the internal category value based on the selected spinner position
     private String getSelectedCategory() {
         int position = spinnerCategory != null ? spinnerCategory.getSelectedItemPosition() : 0;
 
@@ -562,12 +620,14 @@ public class HomeFragment extends Fragment {
         return filterCategoryValues[position];
     }
 
+    // Returns the displayed selected month text
     private String getSelectedMonth() {
         return spinnerMonth != null && spinnerMonth.getSelectedItem() != null
                 ? spinnerMonth.getSelectedItem().toString()
                 : getString(R.string.all);
     }
 
+    // Returns the internal sort key based on the selected spinner position
     private String getSelectedSort() {
         int position = spinnerSort != null ? spinnerSort.getSelectedItemPosition() : 0;
 
@@ -578,6 +638,7 @@ public class HomeFragment extends Fragment {
         return sortValueKeys[position];
     }
 
+    // Returns the current search text
     private String getSearchQuery() {
         return etSearchExpense != null && etSearchExpense.getText() != null
                 ? etSearchExpense.getText().toString().trim()
