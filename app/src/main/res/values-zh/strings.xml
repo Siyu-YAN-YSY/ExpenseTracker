@@ -238,6 +238,16 @@
     <string name="info_message">轻松记录你的日常支出。\n\n• 添加、编辑和删除支出\n• 筛选、搜索和排序支出\n• 比较本月和上月支出\n• 查看图表、智能洞察和预算提醒\n• 将支出记录导出为 CSV\n• 标记重复支出\n\n保持有条理，更好地管理你的财务！</string>
     <string name="ok">确定</string>
 
+    <string name="monthly_budget_insight">每月预算洞察</string>
+    <string name="smart_insight">智能洞察</string>
+    <string name="no_spending_recorded_yet_this_month">本月尚未记录任何支出。</string>
+    <string name="smart_insight_budget_needed">设置每月预算以获取个性化支出洞察。</string>
+    <string name="smart_insight_budget_may_be_high">您仅使用了每月预算的 %.1f%%。如果这对您来说是正常情况，您的预算可能设置得过高。</string>
+    <string name="smart_insight_good">做得很好。您已使用每月预算的 %.1f%%，支出处于健康范围内。</string>
+    <string name="smart_insight_warning">您已使用每月预算的 %.1f%%。虽然仍在预算内，但应开始注意支出。</string>
+    <string name="smart_insight_close_limit">警告：您已使用每月预算的 %.1f%%。您已接近预算上限。</string>
+    <string name="smart_insight_over_budget">您已超出预算。您已使用每月预算的 %.1f%%。</string>
+
 
     <string-array name="expense_categories">
         <item>Food</item>

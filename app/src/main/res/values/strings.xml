@@ -237,6 +237,17 @@
     <string name="ok">OK</string>
 
 
+    <string name="monthly_budget_insight">Monthly Budget Insight</string>
+    <string name="smart_insight">Smart Insight</string>
+    <string name="no_spending_recorded_yet_this_month">No spending recorded yet this month.</string>
+    <string name="smart_insight_budget_needed">Set a monthly budget to get personalized spending insights.</string>
+    <string name="smart_insight_budget_may_be_high">You have only used %.1f%% of your monthly budget. If this is normal for you, your budget may be set too high.</string>
+    <string name="smart_insight_good">Good job. You have used %.1f%% of your monthly budget and are staying in a healthy spending range.</string>
+    <string name="smart_insight_warning">You have used %.1f%% of your monthly budget. You are still under budget, but you should start watching your spending.</string>
+    <string name="smart_insight_close_limit">Warning: you have used %.1f%% of your monthly budget. You are getting close to your budget limit.</string>
+    <string name="smart_insight_over_budget">You are over budget. You have used %.1f%% of your monthly budget.</string>
+
+
     <string-array name="expense_categories">
         <item>Food</item>
         <item>Entertainment</item>

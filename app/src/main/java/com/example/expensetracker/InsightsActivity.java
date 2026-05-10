@@ -142,13 +142,15 @@ public class InsightsActivity extends AppCompatActivity {
         int daysInMonth = selected.getActualMaximum(Calendar.DAY_OF_MONTH);
         boolean selectedMonthIsCurrent = isSameMonthAndYear(selected, Calendar.getInstance());
         int daysUsedForAverage = selectedMonthIsCurrent ? Math.max(1, dayOfMonth) : daysInMonth;
+        int dayForInsight = selectedMonthIsCurrent ? dayOfMonth : daysInMonth;
 
         double dailyAverage = currentTotal / daysUsedForAverage;
         double projectedMonthlySpending = selectedMonthIsCurrent ? dailyAverage * daysInMonth : currentTotal;
 
         float monthlyBudget = getSharedPreferences("budget", MODE_PRIVATE).getFloat("budget", 0f);
-        String healthStatus = getHealthStatus(currentTotal, projectedMonthlySpending, monthlyBudget);
-        int healthScore = getHealthScore(currentTotal, projectedMonthlySpending, monthlyBudget);
+
+        String smartInsightStatus = getSmartInsightStatus(currentTotal, monthlyBudget, dayForInsight);
+        String smartInsightMessage = getSmartInsightMessage(currentTotal, monthlyBudget, dayForInsight);
 
         tvInsightsSubtitle.setText(getString(
                 R.string.analyzing_month_compared,
@@ -179,9 +181,9 @@ public class InsightsActivity extends AppCompatActivity {
                 ? Color.parseColor("#C62828")
                 : Color.parseColor("#2E7D32"));
 
-        tvHealthScore.setText(getString(R.string.health_score_value, healthScore));
-        tvHealthMessage.setText(getHealthStatusDisplayName(healthStatus));
-        tvHealthMessage.setTextColor(getHealthColor(healthStatus));
+        tvHealthScore.setText(getString(R.string.smart_insight));
+        tvHealthMessage.setText(smartInsightMessage);
+        tvHealthMessage.setTextColor(getSmartInsightColor(smartInsightStatus));
 
         if (monthlyBudget <= 0) {
             tvBudgetRisk.setText(getString(R.string.monthly_budget_is_not_set_yet));
@@ -240,7 +242,8 @@ public class InsightsActivity extends AppCompatActivity {
                 dailyAverage,
                 projectedMonthlySpending,
                 monthlyBudget,
-                currentCategoryTotals
+                currentCategoryTotals,
+                dayForInsight
         ));
 
         setupBarChart(currentCategoryTotals, previousCategoryTotals);
@@ -336,46 +339,57 @@ public class InsightsActivity extends AppCompatActivity {
         return topCategory;
     }
 
-    private String getHealthStatus(double currentTotal, double projectedMonthlySpending, float monthlyBudget) {
-        if (currentTotal == 0) return "No Data";
+    private String getSmartInsightStatus(double currentTotal, float monthlyBudget, int dayOfMonth) {
         if (monthlyBudget <= 0) return "Budget Needed";
-        if (currentTotal > monthlyBudget || projectedMonthlySpending > monthlyBudget) return "Over Budget Risk";
-        if (projectedMonthlySpending >= monthlyBudget * 0.80) return "Warning";
-        return "Good";
+        if (currentTotal <= 0) return "No Data";
+
+        double usageRatio = currentTotal / monthlyBudget;
+
+        if (usageRatio < 0.10 && dayOfMonth > 15) return "Budget Too High";
+        if (usageRatio <= 0.60) return "Good";
+        if (usageRatio <= 0.80) return "Warning";
+        if (usageRatio <= 1.00) return "Close To Limit";
+
+        return "Over Budget";
     }
 
-    private String getHealthStatusDisplayName(String healthStatus) {
-        if ("Good".equals(healthStatus)) {
-            return getString(R.string.good);
-        } else if ("Warning".equals(healthStatus)) {
-            return getString(R.string.health_warning);
-        } else if ("Over Budget Risk".equals(healthStatus)) {
-            return getString(R.string.health_over_budget_risk);
-        } else if ("Budget Needed".equals(healthStatus)) {
-            return getString(R.string.health_budget_needed);
-        } else {
-            return getString(R.string.health_no_data);
+    private String getSmartInsightMessage(double currentTotal, float monthlyBudget, int dayOfMonth) {
+        if (monthlyBudget <= 0) {
+            return getString(R.string.smart_insight_budget_needed);
         }
+
+        if (currentTotal <= 0) {
+            return getString(R.string.no_spending_recorded_yet_this_month);
+        }
+
+        double usagePercent = (currentTotal / monthlyBudget) * 100.0;
+
+        if (usagePercent < 10.0 && dayOfMonth > 15) {
+            return getString(R.string.smart_insight_budget_may_be_high, usagePercent);
+        }
+
+        if (usagePercent <= 60.0) {
+            return getString(R.string.smart_insight_good, usagePercent);
+        }
+
+        if (usagePercent <= 80.0) {
+            return getString(R.string.smart_insight_warning, usagePercent);
+        }
+
+        if (usagePercent <= 100.0) {
+            return getString(R.string.smart_insight_close_limit, usagePercent);
+        }
+
+        return getString(R.string.smart_insight_over_budget, usagePercent);
     }
 
-    private int getHealthScore(double currentTotal, double projectedMonthlySpending, float monthlyBudget) {
-        if (currentTotal == 0) return 100;
-        if (monthlyBudget <= 0) return 70;
+    private int getSmartInsightColor(String status) {
+        if ("Good".equals(status)) return Color.parseColor("#2E7D32");
+        if ("Warning".equals(status)) return Color.parseColor("#EF6C00");
+        if ("Close To Limit".equals(status)) return Color.parseColor("#C62828");
+        if ("Over Budget".equals(status)) return Color.parseColor("#C62828");
+        if ("Budget Too High".equals(status)) return Color.parseColor("#1565C0");
 
-        double ratio = projectedMonthlySpending / monthlyBudget;
-        int score = (int) Math.round(100 - ((ratio - 0.50) * 100));
-
-        if (ratio <= 0.50) score = 100;
-        if (score < 0) score = 0;
-        if (score > 100) score = 100;
-
-        return score;
-    }
-
-    private int getHealthColor(String healthStatus) {
-        if ("Good".equals(healthStatus)) return Color.parseColor("#2E7D32");
-        if ("Warning".equals(healthStatus)) return Color.parseColor("#EF6C00");
-        if ("Over Budget Risk".equals(healthStatus)) return Color.parseColor("#C62828");
         return Color.parseColor("#607D8B");
     }
 
@@ -387,7 +401,8 @@ public class InsightsActivity extends AppCompatActivity {
                                            double dailyAverage,
                                            double projectedMonthlySpending,
                                            float monthlyBudget,
-                                           Map<String, Double> categoryTotals) {
+                                           Map<String, Double> categoryTotals,
+                                           int dayForInsight) {
         StringBuilder builder = new StringBuilder();
 
         if (currentTotal == 0) {
@@ -437,27 +452,39 @@ public class InsightsActivity extends AppCompatActivity {
                 .append("\n");
 
         if (monthlyBudget > 0) {
+            double usagePercent = (currentTotal / monthlyBudget) * 100.0;
             double remaining = monthlyBudget - currentTotal;
 
-            if (remaining < 0) {
+            if (usagePercent < 10.0 && dayForInsight > 15) {
+                builder.append("• ")
+                        .append(getString(R.string.smart_insight_budget_may_be_high, usagePercent))
+                        .append("\n");
+            } else if (remaining < 0) {
                 builder.append("• ")
                         .append(getString(
                                 R.string.insight_over_monthly_budget,
                                 CurrencyManager.formatAmount(this, Math.abs(remaining))
                         ))
                         .append("\n");
-            } else if (projectedMonthlySpending > monthlyBudget) {
+            } else if (usagePercent <= 60.0) {
+                builder.append("• ")
+                        .append(getString(R.string.smart_insight_good, usagePercent))
+                        .append("\n");
+            } else if (usagePercent <= 80.0) {
+                builder.append("• ")
+                        .append(getString(R.string.smart_insight_warning, usagePercent))
+                        .append("\n");
+            } else if (usagePercent <= 100.0) {
+                builder.append("• ")
+                        .append(getString(R.string.smart_insight_close_limit, usagePercent))
+                        .append("\n");
+            }
+
+            if (remaining >= 0 && projectedMonthlySpending > monthlyBudget) {
                 builder.append("• ")
                         .append(getString(
                                 R.string.insight_may_go_over_budget,
                                 CurrencyManager.formatAmount(this, projectedMonthlySpending - monthlyBudget)
-                        ))
-                        .append("\n");
-            } else {
-                builder.append("• ")
-                        .append(getString(
-                                R.string.insight_should_stay_under_budget,
-                                CurrencyManager.formatAmount(this, monthlyBudget - projectedMonthlySpending)
                         ))
                         .append("\n");
             }
